@@ -1,0 +1,14 @@
+#!/bin/bash
+# Autor Firdavs Murodov <firdavs@root.tj>
+# Date Mar 27, 2015 19:00
+# mac address $1
+
+
+if [ $# -eq 0 ]
+  then
+    echo "Usage: maclookup 00:16:4e:41:e2:91"
+  exit 1
+fi
+curl https://www.macvendorlookup.com/oui.php?mac=$1 | jq '.[]'
+
+exit 0

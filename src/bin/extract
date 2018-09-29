@@ -1,0 +1,71 @@
+#!/bin/bash
+# function Extract for common file formats
+
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+function extract {
+  if [ -z "$1" ]; then
+     # display usage if no parameters given
+     echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+     echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
+  else
+    for n in "$@"
+    do
+      if [ -f "$n" ] ; then
+        local filename=$(basename "$n")
+        local foldername="${filename%%.*}"
+        local fullpath=`perl -e 'use Cwd "abs_path";print abs_path(shift)' "$n"`
+        local didfolderexist=false
+        if [ -d "$foldername" ]; then
+          didfolderexist=true
+          read -p "$foldername already exists, do you want to overwrite it? (y/n) " -n 1
+          echo
+          if [[ $REPLY =~ ^[Nn]$ ]]; then
+            return
+          fi
+        fi
+        mkdir -p "$foldername"
+        case "${n%,}" in
+          *.tar.bz2|*.tb2|*.tbz|*.tbz2)
+                      tar xjf       "$fullpath" ;;
+          *.tar.gz)   tar xzf       "$fullpath" ;;
+          *.tar.xz)   tar Jxvf      "$fullpath" ;;
+          *.tar.Z)    tar xzf       "$fullpath" ;;
+          *.tar)      tar xf        "$fullpath" ;;
+          *.taz)      tar xzf       "$fullpath" ;;
+          *.tgz)      tar xzf       "$fullpath" ;;
+          *.txz)      tar Jxvf      "$fullpath" ;;
+          *.lzma)     unlzma        "$fullpath" ;;
+          *.bz2)      bunzip2       "$fullpath" ;;
+          *.cbr|*.rar)
+                      unrar x -ad   "$fullpath" ;;
+          *.gz)       gunzip        "$fullpath" ;;
+          *.cbz|*.epub|*.zip)
+                      unzip         "$fullpath" ;;
+          *.z)        uncompress    "$fullpath" ;;
+          *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
+                      7z x          "$fullpath" ;;
+          *.xz)       unxz          "$fullpath" ;;
+          *.exe)      cabextract    "$fullpath" ;;
+          *.cpio)     cpio -id <    "$fullpath" ;;
+          *.cba|*.ace)
+                      unace x       "$fullpath" ;;
+
+          *)
+                      echo "extract: '$n' - unknown archive method"
+                      cd .. && ! $didfolderexist && rm -r "$foldername"
+                      return 1
+                      ;;
+        esac
+      else
+        echo "'$n' - file does not exist"
+        return 1
+      fi
+    done
+  fi
+}
+
+extract "$@"
+
+IFS=$SAVEIFS

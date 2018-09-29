@@ -1,0 +1,8 @@
+cert/*
+dl/*
+fl/*
+inc/*
+logs/*
+files*
+history
+stderr.log

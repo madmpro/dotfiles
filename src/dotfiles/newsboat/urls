@@ -1,0 +1,126 @@
+#------------------------------
+# Query Feeds
+#------------------------------
+# query:<name of feed>:<filter expression> [<tag> ...]
+# --- Everything Unread
+"query: Unread Articles:unread = \"yes\""
+"query:→ Unread Articles:unread = \"yes\""
+"query:→ Bookmarked Articles:flags # \"s\"" "Starred"
+# Tags
+"query:→ Android:tags # \"Android\"" "Android"
+"query:→ Blockchain:tags # \"Blockchain\"" "Blockchain"
+"query:→ Blogs:tags # \"Blogs\"" "Blogs"
+"query:→ Design:tags # \"Design\"" "Design"
+"query:→ Engineering:tags # \"Engineering\"" "Engineering"
+"query:→ Hardware:tags # \"Hardware\"" "Hardware"
+"query:→ IoT:tags # \"IoT\"" "IoT"
+"query:→ IT:tags # \"IT\"" "IT"
+"query:→ Linux:tags # \"Linux\"" "Linux"
+"query:→ MacOS:tags # \"MacOS\"" "MacOS"
+"query:→ Network:tags # \"Network\"" "Network"
+"query:→ OpenSource:tags # \"OpenSource\"" "OpenSource"
+"query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
+"query:→ Software:tags # \"Software\"" "Software"
+"query:→ Tech:tags # \"Tech\"" "Tech"
+"query:→ YouTube:tags # \"YouTube\"" "YouTube"
+
+"query:Unread Articles (Favourite):unread = \"yes\" and tags # \"Favourite\""
+
+#------------------------------
+# Feeds
+#------------------------------
+# This is for password example:
+# http://username:password@hostname.domain.tld/feed.rss
+------------------------------
+CIO
+------------------------------
+https://www.cio.ru/rss "CIO"
+------------------------------
+Infrastructure
+------------------------------
+------------------------------
+IT
+------------------------------
+https://habr.com/rss/interesting/ "IT" "Tech"
+https://www.itworld.com/index.rss "IT"
+https://www.oreilly.com/ideas/feed.atom "IT"
+------------------------------
+Linux
+------------------------------
+https://www.linux.org.ru/section-rss.jsp?section=1 "~Linux.org.ru" "Linux" "OpenSource"
+https://www.opennet.ru/opennews/opennews_all.rss "~OpenNET" "Linux" "OpenSource"
+http://blog.sanctum.geek.nz/feed/ "Unix"
+https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
+http://feeds.feedburner.com/LinuxByExamples "Linux"
+------------------------------
+MacOS
+------------------------------
+https://www.macworld.com/index.rss "MacOS"
+------------------------------
+Network
+------------------------------
+https://www.networkworld.com/index.rss "Network"
+https://linkmeup.ru/rss "Network"
+------------------------------
+OSP.ru
+------------------------------
+https://www.osp.ru/rss/Software.rss "~OSP.ru: Software"
+https://www.osp.ru/rss/Networking.rss "~OSP.ru: Network" "Network"
+https://www.osp.ru/rss/Security.rss "~OSP.ru: Security" "Security"
+https://www.osp.ru/rss/AllPC.rss "~OSP.ru: PC" "PC"
+https://www.osp.ru/rss/DataCenter.rss "~OSPru: Infrastructure" "Infrastructure"
+------------------------------
+PC
+------------------------------
+------------------------------
+Reddit
+------------------------------
+http://www.reddit.com/r/linux/.rss "~Rreddit: Linux" "Linux"
+http://www.reddit.com/r/commandline/.rss "~Rreddit: Commandline" "Linux"
+http://www.reddit.com/r/LinuxActionShow/.rss "~Rreddit: LinuxActionShow" "Linux"
+http://www.reddit.com/r/unixporn/.rss "~Rreddit: Linux" "Linux"
+http://www.reddit.com/r/pkgoftheday/.rss "~Rreddit: PkgOfTheDay" "Linux"
+http://www.reddit.com/r/gnu/.rss "~Rreddit: GNU" "Linux"
+http://www.reddit.com/r/linux_devices/.rss "~Rreddit: Devices" "Linux" "Devices"
+http://www.reddit.com/r/UnixProTips/.rss "~Rreddit: UnixProTips" "Linux"
+http://www.reddit.com/r/tmux/.rss "~Rreddit: tmux" "Linux"
+http://www.reddit.com/r/bash/.rss "~Rreddit: Bash" "Linux" "Bash"
+http://www.reddit.com/r/ScriptSwap/.rss "~Rreddit: ScriptSwap" "Linux"
+http://www.reddit.com/r/linuxprojects/.rss "~Rreddit: LinuxProjects" "Linux"
+http://www.reddit.com/r/usefulscripts/.rss "~Rreddit: UsefulScripts" "Linux" "Scripts"
+http://www.reddit.com/r/opensource/.rss "~Rreddit: OpenSource" "OpenSource"
+http://www.reddit.com/r/coolgithubprojects/.rss "~Rreddit: CoolGithubProjects" "OpenSource"
+http://www.reddit.com/r/selfhosted/.rss "~Rreddit: SelfHosted" "OpenSource"
+
+------------------------------
+Software
+------------------------------
+https://feeds.feedburner.com/pfc "Software"
+
+------------------------------
+TECH
+------------------------------
+https://techcrunch.com/feed/ "~TechCrunch" "Tech"
+https://www.engadget.com/rss.xml "~Engadget" "Tech"
+https://hackaday.com/blog/feed/ "~Hackaday" "Tech"
+https://www.raspberrypi.org/magpi/feed/ "~The MagiPi" "Tech"
+http://feeds.feedburner.com/oreilly/radar/atom "~O'Reilly" "Tech"
+https://www.oreilly.com/ideas/feed.atom "~O'Reilly: Ideas" "Tech"
+https://www.pcworld.com/index.rss "~PCWorld" "Tech"
+https://codeby.net/forum/forums/-/index.rss "Tech"
+------------------------------
+Security
+------------------------------
+https://helpugroup.ru/feed/ "Security"
+https://www.hackerone.com/blog.rss "~HackerOne" "Tech" "Security"
+http://feeds.feedburner.com/GoogleOnlineSecurityBlog "~Google Security" "Tech" "Security"
+------------------------------
+Xakep.ru
+------------------------------
+https://xakep.ru/tag/windows/feed/ "~Xakep.ru: Windows" "Windows"
+https://xakep.ru/tag/linux/feed/ "~Xakep.ru: Linux" "Linux"
+https://xakep.ru/tag/android/feed/ "~Xakep.ru: Android" "Android"
+https://xakep.ru/tag/zhelezo/feed/ "~Xakep.ru: Hardware" "Hardware"
+https://xakep.ru/tag/iot/feed/ "~Xakep.ru: IoT" "IoT"
+https://xakep.ru/tag/blockchain/ "~Xakep.ru: Blockchain" "Blockchain"
+https://xakep.ru/tag/messengers/ "~Xakep.ru: Messengers" "Messengers"

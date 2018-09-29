@@ -1,0 +1,27 @@
+#!/bin/bash
+
+r[0]=""
+r[1]="http://silver.ru/radio/128.m3u"
+r[2]="http://91.190.127.185:8000/live_test"
+r[3]="http://radio.nikatv.ru/;.mp4"
+
+rn[0]=""
+rn[1]="Radio: Silver Rain"
+rn[2]="Djazz: Hermitage"
+rn[3]="Rock: Nika FM"
+
+if [ $# -eq 0 ]
+  then
+    echo "Usage: $0 00:16:4e:41:e2:91"
+      for ((i=0; i<${#r[@]}; i++))
+    do
+      echo $i . ${rn[$i]}
+    done
+  exit 1
+fi
+
+if [[ ${r[${1}]} = *"m3u"* ]]; then
+  mplayer -quiet -playlist ${r[${1}]}
+else
+  mplayer -quiet ${r[${1}]}
+fi

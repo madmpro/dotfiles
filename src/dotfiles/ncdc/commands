@@ -1,0 +1,41 @@
+# Set basic info
+
+/set nick [Trap]zaqxswdec
+/set description Many files, zero space...
+/set connection 10
+/share "soft" /Volumes/Data/Software
+
+# Change setting
+/help set
+/hset   # settings per hub
+/set    # show a list of global settings
+/unset
+/unshare
+
+# Color themes
+/set color*  # show only color settings
+/set color_list_default yellow
+/set color_list_header white,bold
+/set color_list_select red,bold
+/set color_log_default red
+/set color_log_highlight yellow,bold
+/set color_log_join cyan,bold
+/set color_log_nick blue
+/set color_log_ownnick white
+/set color_log_quit cyan
+/set color_separator yellow,reverse
+/set color_tab_active red,bold
+/set color_tabprio_high magenta,bold
+/set color_tabprio_low black,bold
+/set color_tabprio_med cyan,bold
+/set color_title yellow,reverse
+
+# connect to a hub
+/help connect
+
+/open globalconnect
+# https://www.thehublist.com
+/connect dchub://tankafett.biz/
+/open tankafett
+
+/connect dchub://traphouse.tankafett.biz:420

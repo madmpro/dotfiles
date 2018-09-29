@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# Scan Network for Unknown Computers
+
+if [[ $EUID -ne 0 ]]; then
+  echo "You must be a root user"
+  echo "Trying to restart script as sudo"
+  sudo $0 $@
+  exit
+fi
+
+#Color codes
+bold=`echo -en "\e[1m"`
+underline=`echo -en "\e[4m"`
+red=`echo -en "\e[31m"`
+blue=`echo -en "\e[34m"`
+normal=`echo -en "\e[0m"`
+blink=`echo -en "\e[5m"`
+purple=`echo -en "\e[35m"`
+reverse=`echo -en "\e[7m"`
+
+#tmp files
+list="/tmp/maclist"
+found="/tmp/macfound"
+unknown="/tmp/macunknown"
+scan="/tmp/macscan"
+
+rm "$list" "$found" "$unknown" "$scan"
+touch "$list" "$found" "$unknown" "$scan"
+
+#Known List URL
+url="http://filmsbykris.com/personal/home/maclist.php?key=shopp3r"
+
+clear
+
+echo "Downloading list..."
+wget -q "$url" -O $list
+
+echo "Scanning Network..."
+arp-scan -l > $scan
+cat $scan|\
+  awk '{print $2}'|\
+  grep ':'|\
+  while read l;
+  do
+    grep -i "$l" $list >> $found||echo "$l" >> $unknown
+  done
+
+echo -e "\n\n${bold}${underline}Recognized Machines${normal}"
+cat $found |while read l
+do
+  IFS=' ' read -r -a a <<< "$l"
+  ip="$(grep -i "${a[2]}" $scan|awk '{print $1}' )"
+  echo -n "${blue}"
+  echo -n "${a[0]} "
+  echo -n "${normal}${bold}${purple}"
+  echo -n "$ip "
+  #echo -n "${a[1]} "
+  echo -n "${normal}${bold}"
+  echo -n "${a[2]}"
+  echo "${normal}"
+done|column -t
+
+echo -e "\n\n${red}${underline}Unknown Machines${normal}"
+cat $unknown|while read l
+do
+  s="$(grep -i "$l" $scan)"
+  IFS=' ' read -r -a a <<< "$s"
+  echo -n "${bold}${blink}${red}${reverse}"
+  echo -n "${a[0]}"
+  echo -n "${a[1]}"
+  echo "${normal}"
+done

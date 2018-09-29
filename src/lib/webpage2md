@@ -1,0 +1,343 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+
+# Options defaults
+
+content_selector='div.maintext'
+title_selector='h1 a'
+is_auto=0
+curl_options='--silent'
+
+
+function show_help() {
+  readonly HELP="
+NAME
+    webpage2md - convert a web page to markdown
+
+SYNOPSIS
+    webpage2md [options] <URL>
+
+DESCRIPTION
+    webpage2md fetches a web page, specified by <URL>. If <URL> begins with
+    'https://' or 'http://' then the web page will be downloaded from the
+    Internet. If not, <URL> will be used to search for an HTML file locally.
+    From the resulting HTML, webpage2md picks one element within the page and
+    converts the inner HTML to markdown. Then it writes the resulting markdown
+    to stout (or optionally to an auto-named file).
+
+OPTIONS
+    -a, --auto
+        Automatically write results to a file with a file-name based on the
+        title from the page. If this option is not given, markdown is written
+        to stdout.
+
+    -c, --content <element>
+        What HTML element within the wiki page do we use to find the content
+        for the markdown we want? Specify <element> using a CSS selector. The
+        inner HTML of this element will be used.
+        Default: '$content_selector'
+
+    -h, --help
+        Show this help message
+
+    -r, --curl-options <options>
+        Options to pass to the curl program when downloading the page
+        Default: '$curl_options'
+
+    -t, --title <element>
+        What HTML element within the wiki page do we use to find the page
+        title? Specify <element> using a CSS selector. The inner HTML of this
+        element will be used.
+        Default: '$title_selector'
+
+REPOSITORY
+    https://github.com/seanmadsen/webpage2md
+
+REQUIREMENTS
+    • reverse_markdown - https://github.com/xijo/reverse_markdown
+    • html-xml-utils - https://www.w3.org/Tools/HTML-XML-utils/README
+    • curl
+
+EXIT STATUS
+    0   Success
+    1   Content element not found in page
+    2   Problem running reverse_markdown
+    4   Problem fetching <URL> with curl
+    5   Problem running an html-xml-utils tool
+    6   HTML file not found locally
+    9   Other
+"
+  echo "$HELP"
+  exit 0
+}
+
+function exit_content_element_missing() {
+  (>&2 echo "$@")
+  (>&2 echo "Content element not found in page")
+  exit 1
+}
+
+function exit_reverse_markdown_problem() {
+  (>&2 echo "$@")
+  (>&2 echo "Could not run reverse_markdown. Make sure it is installed.
+    See: https://github.com/xijo/reverse_markdown")
+  exit 2
+}
+
+function exit_curl_problem() {
+  (>&2 echo "$@")
+  (>&2 echo "Could not run curl. Make sure it is installed.")
+  exit 4
+}
+
+function exit_html_xml_utils() {
+  (>&2 echo "$@")
+  (>&2 echo "Make sure html-xml-utils is installed.")
+  exit 5
+}
+
+function exit_html_file_not_found {
+  (>&2 echo \
+  "You specified the following HTML file which could not be found locally
+  $@")
+  exit 6
+}
+
+function exit_other() {
+  (>&2 echo "$@")
+  exit 9
+}
+
+# Parse options
+while [[ $# -gt 1 ]] ; do
+  key="$1"
+  case $key in
+    -a|--auto)
+      is_auto=1
+      ;;
+    -c|--content)
+      content_selector="$2"
+      shift
+      ;;
+    -r|--curl-options)
+      curl_options="$2"
+      shift
+      ;;
+    -t|--title)
+      title_selector="$2"
+      shift
+      ;;
+    *)
+       # unknown options
+    ;;
+  esac
+  shift
+done
+if [ $# -eq 0 ] || [ $@ = "-h" ] || [ $@ = "help" ] || [ $@ = "--help" ]; then
+    show_help
+fi
+url=$@
+
+
+# get web page
+if [[ "$url" =~ ^https?:// ]]; then
+  html=$(curl $curl_options "$url" ) || exit_curl_problem
+else
+  html=$(cat "$url") || exit_html_file_not_found "$url"
+fi
+
+#echo "$html"
+
+# normalize web page HTML
+html=$(echo "$html" | hxnormalize -l 240 -x ) || \
+  exit_html_xml_utils "error running hxnormalize"
+
+# remove #comments-section from page
+html=$(echo "$html" | hxremove "#comments-section")
+
+# Extract page title
+title=$(echo "$html" | hxselect -c "$title_selector" ) || \
+  exit_html_xml_utils "error selecting title with hxselect"
+
+# Extract page content
+content=$(echo "$html" | hxselect -c "$content_selector" ) || \
+  exit_html_xml_utils "error selecting content with hxselect"
+if [[ -z "${content// }" ]]; then
+  exit_content_element_missing
+fi
+
+
+# Within page content, convert code blocks within <script> tags into <pre> tags
+content=$(echo "$content" | perl -0777 -pe 's|
+  <script.*?type="syntaxhighlighter".*?><!\[CDATA\[    # script open tag
+  (.*?)                                                # content
+  \]\]></script>                                       # script close tag
+  |<pre>$1</pre>|gsx' )
+
+# Remove <p> and <div> tags inside of <li>
+content=$(echo "$content" | perl -0777 -pe 's@
+    (
+      < (li) (\s[^>]*)? >     # open tag
+      ( (?!</\2>) (.|\n) )*   # everything after the open tag but before close
+    )
+  @$1=~s!</?(p|div)(\s[^>]*)?>!!gmr;@gmxe' )
+
+# Remove <p> and <div> tags inside of <table>
+# But don't do it for admonitions tables (with class like "macro")
+content=$(echo "$content" | perl -0777 -pe 's@
+    (
+      < (table) (\s((?!macro)[^>])*)? >    # open tag
+      ( (?!</\2>) (.|\n) )*                # everything after the open tag but before close
+    )
+  @$1=~s!</?(p|div)(\s[^>]*)?>!!gmr;@gimxe' )
+
+# Remove spaces around bold and italic
+#content=$(echo "$content" | perl -0777 -pe 's@(?<=\S)\s+(?=</(b|strong|i|em)>)@@gmx' )
+#content=$(echo "$content" | perl -0777 -pe 's@(?<=<b>)\s+(?=\S)@@gmx' )
+#content=$(echo "$content" | perl -0777 -pe 's@(?<=<i>)\s+(?=\S)@@gmx' )
+#content=$(echo "$content" | perl -0777 -pe 's@(?<=<em>)\s+(?=\S)@@gmx' )
+#content=$(echo "$content" | perl -0777 -pe 's@(?<=<strong>)\s+(?=\S)@@gmx' )
+
+# convert <strong> to <b> and <em> to <i>
+content=$(echo "$content" | perl -0777 -pe 's@<(/)?strong>@<$1b>@gmi' )
+content=$(echo "$content" | perl -0777 -pe 's@<(/)?em>@<$1i>@gmi' )
+
+# remove span elements
+content=$(echo "$content" | perl -0777 -pe 's@</?(span)\s*[^>]*>@@gmi' )
+
+# replace non-breaking space with space
+content=$(echo "$content" | perl -0777 -pe 's@(&nbsp;|\xC2\xA0)@ @gmxi' )
+
+function convert() {
+  ruby -e '
+  require "reverse_markdown"
+  puts ReverseMarkdown.convert(
+    ARGF.read,
+    github_flavored: true)'
+}
+
+# Generate markdown
+markdown=$(echo "$content" | convert ) || \
+  exit_reverse_markdown_problem
+
+
+# Add page title to beginning of markdown
+if [[ $title = *[![:space:]]* ]]; then
+   markdown=$(echo -e "# ${title}\n\n${markdown}")
+fi
+
+
+# un-escape characters escaped by confluence wiki
+markdown=$(echo "$markdown" | sed -r 's@\\([`~#$^*_<>])@\1@g' )
+
+
+
+# Fix list indentation to use 4 spaces
+markdown=$(echo "$markdown" | perl -0777 -pe \
+  's@^(\s+)(?=(- |\d+\. ))@$1=~s! !  !gr@gme' )
+
+# Fix un-ordered lists to adhere to markdown standards
+markdown=$(echo "$markdown" | perl -0777 -pe \
+  's@^(\s*)(- )@$1* @gm' )
+
+# Fix ordered lists to adhere to markdown standards
+markdown=$(echo "$markdown" | perl -0777 -pe \
+  's@^(\s*)(\d+\. )@${1}1. @gm' )
+
+# clean up markdown
+readonly NBSP='\xC2\xA0'
+markdown=$(echo "$markdown" | \
+  # remove header attribs like {#this}
+    sed -r 's|^(#{1,6}.*?) *\{#.*\}$|\1|g' | \
+  # convert non-breaking spaces to spaces
+    sed -r "s|$NBSP| |g" | \
+  # convert non-breaking spaces to spaces
+    sed -r "s|&nbsp;| |g" | \
+  # remove trailing whitespace
+    sed -r 's|[[:space:]]*$||g'
+  ) || exit_other "unable to clean up markdown with sed"
+
+
+# convert wiki admonitions to markdown admonitions...
+
+# Admonitions:
+# When an admonition begins with content instead of a title,
+# move that content down by 2 lines so that it looks like other admonitions.
+markdown=$(echo "$markdown" | perl -0777 -pe 's@
+    (\|\x20\!\[\]\(\/confluence\/images\/icons\/emoticons\/
+        (information|warning|check|forbidden)\.png\)
+      )\x20\|
+    \x20(?!\*\*)
+  @$1 |\n\n@gmx' )
+
+# Admonitions:
+# Convert first line to markdown syntax when a title is present.
+markdown=$(echo "$markdown" | perl -0777 -pe 's@
+    (\|\x20\!\[\]\(\/confluence\/images\/icons\/emoticons\/
+        (information|warning|check|forbidden)\.png\)
+      )\x20\|
+    \x20\*\*([^*]*)\*\*\n
+  @!!! $2 "$3"\n@gmx' )
+
+# Admonitions:
+# Convert first line to markdown syntax when a title is not present.
+markdown=$(echo "$markdown" | perl -0777 -pe 's@
+    (\|\x20\!\[\]\(\/confluence\/images\/icons\/emoticons\/
+        (information|warning|check|forbidden)\.png\)
+      )\x20\|
+  @!!! $2@gmx' )
+
+# Admonitions:
+# Indent the rest of the lines.
+markdown=$(echo "$markdown" | perl -0777 -pe 's@
+    (^!!!\x20.*$)
+    (
+      ( (?!^\x20\|) (.|\n) )*
+    )
+    (^\x20\|\n)
+  @$a=$1; $b=$2; $b=~s!^!    !gm; $a.$b; @gmxe' )
+
+
+# Admonitions:
+# Use correct names
+markdown=$(echo "$markdown" | perl -0777 -pe 's@(?<=^!!! )information@note@gm' )
+markdown=$(echo "$markdown" | perl -0777 -pe 's@(?<=^!!! )check@tip@gm' )
+markdown=$(echo "$markdown" | perl -0777 -pe 's@(?<=^!!! )warning@warning@gm' )
+markdown=$(echo "$markdown" | perl -0777 -pe 's@(?<=^!!! )forbidden@danger@gm' )
+
+
+# Don't number (or letter) the headings
+markdown=$(echo "$markdown" | perl -0777 -pe 's@
+    ^(\x23+)\x20+                    # heading hashes
+    [a-zA-z0-9]{1,2}(\.|\))\x20+     # number/letter signifier
+  @$1 @gmx' )
+
+# remove trailing whitespace (again)
+markdown=$(echo "$markdown" | sed -r 's@_ \*\*@_**@g' )
+markdown=$(echo "$markdown" | sed -r 's@\*\* _@**_@g' )
+
+# remove trailing whitespace (again)
+markdown=$(echo "$markdown" | sed -r 's@[[:space:]]*$@@g' )
+
+
+# Output
+if [ $is_auto -eq 1 ]; then
+  # formulate file name
+  file_name=$(echo "$title" | \
+    # only ascii characters
+      iconv -f utf-8 -t ascii//translit | \
+    # conver to lowercase
+      tr '[:upper:]' '[:lower:]' | \
+    # convert spaces and underscores to dashes
+      sed 's|[ _]|-|g' | \
+    # keep only letters, numbers, dashes
+      sed -r 's|[^0-9a-zA-Z-]||g' )
+  # write
+  echo "$markdown" > "$file_name.md"
+else
+  # send to stdout
+  echo "$markdown"
+fi

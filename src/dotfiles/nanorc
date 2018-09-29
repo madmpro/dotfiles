@@ -1,0 +1,28 @@
+set mouse
+
+# Tabspaces
+set tabstospaces
+set tabsize 4
+set autoindent
+
+
+# html
+include /usr/local/share/nano/html.nanorc
+# Java
+include /usr/local/share/nano/java.nanorc
+# Manpages
+include /usr/local/share/nano/man.nanorc
+# mutt emails
+include /usr/local/share/nano/mutt.nanorc
+# nanorc files
+include /usr/local/share/nano/nanorc.nanorc
+# Patch files
+include /usr/local/share/nano/patch.nanorc
+# Perl
+include /usr/local/share/nano/perl.nanorc
+# Python
+include /usr/local/share/nano/python.nanorc
+# Ruby
+include /usr/local/share/nano/ruby.nanorc
+# Shell
+include /usr/local/share/nano/sh.nanorc

@@ -1,0 +1,129 @@
+# -- General -------------------------------------------------------------------
+show-keymap-hint yes
+browser "open -g -a 'Google Chrome' %u"
+
+# -- Feeds ---------------------------------------------------------------------
+refresh-on-startup yes
+auto-reload yes
+reload-time 300
+reload-threads 4
+download-retries 4
+download-timeout 10
+prepopulate-query-feeds yes
+show-read-feeds yes
+# feed-sort-order unreadarticlecount-asc
+
+# -- Articles ------------------------------------------------------------------
+history-limit 0
+article-sort-order date-asc
+articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
+#articlelist-format "%D %f %?T?|%-17T| ?%t"
+
+# -- Storage -------------------------------------------------------------------
+max-items 20000
+download-path "~/Downloads/%n"
+
+# -- Notifications -------------------------------------------------------------
+
+notify-program "notify"
+#notify-format  "newsboat: %n unread articles within %f unread feeds"
+notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
+notify-screen yes
+notify-xterm yes
+
+# -- Colors --------------------------------------------------------------------
+
+#color info default default reverse
+#color listnormal_unread green default
+#color listfocus blue default reverse bold
+#color listfocus_unread blue default reverse bold
+
+color listnormal        color249   default
+color listfocus         black  yellow   standout bold
+color listnormal_unread blue   default
+color listfocus_unread  yellow default  bold
+color info              black  white    bold
+#color article cyan default
+color article           white default
+
+highlight feedlist "^ *[0-9]+ *N " color156 default
+highlight articlelist "^ *[0-9]+ *N " color156 default
+
+highlight article "^(Feed|Title|Author|Link|Date|Linux):.*" color75 default
+
+highlight article "^Podcast Download URL:.*" color71 default
+highlight article "^Links:" white color240 underline
+highlight article "\\[[0-9][0-9]*\\]" color72 default bold
+highlight article "\\[image [0-9][0-9]*\\]" color72 default bold
+highlight article "\\[embedded flash: [0-9][0-9]*\\]" color72 default bold
+highlight article ":.*\\(link\\)$" color74 default
+highlight article ":.*\\(image\\)$" color74 default
+highlight article ":.*\\(embedded flash\\)$" color74 default
+#highlight all "Linux" yellow black blink
+
+#highlight articlelist "\\|[a-zA-Z]*" red default
+#highlight articlelist "(?<=\s)[a-zA-Z ]*" yellow default
+# {{{ https://newsboat.org/releases/2.10.2/docs/newsboat.html#_highlighting_text }}}
+
+
+# -- Strings -------------------------------------------------------------------
+
+articlelist-title-format "  %T (%u unread)"
+itemview-title-format "%F: %T"
+feedlist-title-format "  RSS: %u unread, %t all%?T? - tag `%T'&?"
+text-width 80
+
+# -- Navigation ----------------------------------------------------------------
+
+goto-next-feed no
+
+bind-key j down
+bind-key k up
+bind-key RIGHT open
+bind-key LEFT quit
+bind-key n next articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key G end
+bind-key g home
+bind-key O pagedown
+bind-key u pageup
+bind-key l open
+bind-key q quit articlelist
+bind-key q quit article
+bind-key Q quit
+bind-key a toggle-article-read
+bind-key J next-unread article
+bind-key K prev-unread article
+bind-key n next article
+bind-key b bookmark
+bind-key D pb-download
+bind-key u show-urls
+bind-key x pb-delete
+bind-key o open-in-browser
+bind-key C mark-feed-read
+bind-key f edit-flags
+
+# -- Macros --------------------------------------------------------------------
+
+## Note: macro prefix key ( default: , )
+## add video or audio to play queue using mpv (requires: mpv, youtube-dl)
+macro p set browser "mpv --ontop --no-border --force-window --speed=1.5 --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
+
+# Play podcast
+# macro e open ; enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit
+macro e pipe-to "grep -o 'http.*mp3' | xargs -n1 mpv --speed=1.5" ; toggle-article-read "read"
+
+# copy url to clipboard "yank"
+macro y set browser "echo %u | pbcopy"; open-in-browser ; set browser "$BROWSER %u"
+
+# -- Bookmarks -----------------------------------------------------------------
+
+bookmark-cmd ~/.newsbeuter/bookmark.sh
+bookmark-interactive no
+bookmark-autopilot yes
+
+# -- misc ----------------------------------------------------------------------
+
+confirm-exit no
+cleanup-on-quit no

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+  echo -e "Usage: $0 <file_name>.<doc|docx|ppt|pptx|xls|xlsx|txt|rtf|html|epub|cbr|cbz|cbt|cb7|cba|jpg|jpeg|pbm|pgm|png>"
+  echo -e "\nsingle:   $0 file.doc"
+  echo -e "\nmultiple: $0 file1.jpg file2.jpg file3.jpg"
+  echo -e "\nwildcard: $0 *.png"
+  echo -e "\nRequirement: calibre imagemagick libreoffice"
+      return 1
+else
+  if [ ! -f "${1%.*}".pdf ] ; then
+  NAME=${1%.*}
+  case "$1" in
+    *.doc|*.docx)    soffice --headless --convert-to pdf "$@" ;;
+    *.ppt|*.pptx)    soffice --headless --convert-to pdf "$@" ;;
+    *.xls|*.xlsx)    soffice --headless --convert-to pdf "$@" ;;
+    *.txt|*.rtf)     soffice --headless --convert-to pdf "$@" ;;
+    *.html)          soffice --headless --convert-to pdf "$@" ;;
+    *.epub)          soffice --headless --convert-to pdf "$@" ;;
+    *.cbr|*.cbz|*.cb7|*.cbt|*.cba)    ebook-convert "$1" .pdf ;;
+    *.jpg|*.jpeg|*.pbm|*.pgm|*.png)   convert "$@" "${1%.*}"-`date +'%F_%Hh%Ms%S'`.pdf ;;
+    *)               echo "'$1' - unsupported format or file does not exist" ;;
+  esac
+  else
+    echo "'${1%.*}.pdf' - file exist, skipping to prevent overwrite"
+  fi
+fi

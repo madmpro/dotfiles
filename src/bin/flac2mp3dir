@@ -1,0 +1,168 @@
+#!/bin/bash
+
+# Author: Gabriel Burca (gburca dash flac2mp3dir at ebixio dot com)
+# Version: 1.0
+#
+# Copyright (C) 2006-2009  Gabriel Burca (gburca dash flac2mp3dir at ebixio dot com)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+set -o nounset
+set -o errexit
+
+function usage () {
+    cat << EOF
+Usage:
+$0 source/dir dest/dir
+
+All wav/flac files in source/dir and its subdirectories will be converted to
+mp3 and placed in dest/dir while maintaining the directory structures. ID3
+tags will also be copied from flac to mp3 files.
+
+Existing files (mp3 or flac) will not be overwritten.
+Source and destination directories can be the same.
+
+EOF
+}
+
+function absname () {
+	# Returns the absolute filename of a given file or directory.
+	if [ -d "$1" ] ; then   # Only a directory name.
+		dir="$1"
+		file=""
+	elif [ -f "$1" ] ; then # Strip off and save the filename.
+		dir=$(dirname "$1")
+		file="/"$(basename "$1")
+	else
+		# The file did not exist.
+		# Return null string as error.
+		echo
+		return 1
+	fi
+
+	# Change to the directory and display the absolute pathname.
+	cd "$dir"  > /dev/null
+	echo "${PWD}${file}"
+}
+
+function flac2mp3 () {
+	INF="$1"
+	OUTF=`echo "$INF" | sed 's/\.flac$/.mp3/'`
+	PWD=`pwd`
+	SUBDIR=${PWD:$SRCDIRLEN}
+
+	INF="$PWD/$INF"
+	OUTF="$DESTDIR$SUBDIR/$OUTF"
+	#echo "$INF ... $PWD $SRCDIRLEN $SUBDIR $OUTF"
+
+	if [ -e "$OUTF" ] ; then
+		if [ "$OUTF" -ot "$INF" ] ; then
+			# Comment the return out to re-generate old files
+			return
+			echo "*** Re-converting old file: $OUTF"
+			rm -f "$OUTF"
+		else
+			echo "*** Skip flac2mp3! Output file already exists: $OUTF"
+			return
+		fi
+	fi
+
+	if [ ! -e "$DESTDIR$SUBDIR" ] ; then
+		mkdir -p "$DESTDIR$SUBDIR"
+	fi
+
+	# Convert flac to mp3
+	echo "${INDENT}flac2mp3 Converting $INF => $OUTF"
+	flac -c -d "$INF" | lame --preset standard --replaygain-accurate - "$OUTF"
+
+	# Copy tags to new file
+	id3 -D "$INF" -1 -2 "$OUTF"
+
+	# Copy non-flac/non-wav (folder.jpg, etc...) files to dest/dir
+	if [[ ! -e "$DESTDIR$SUBDIR/folder.jpg" && -e "folder.jpg" ]] ; then
+		cp folder.jpg "$DESTDIR$SUBDIR"
+	fi
+}
+
+function wav2mp3 () {
+	INF="$1"
+	OUTF=`echo "$INF" | sed 's/\.wav$/.flac/'`
+
+	if [ -e "$OUTF" ] ; then
+		echo "*** Skip wav2mp3! Output file already exists: $OUTF"
+		return
+	fi
+
+	echo "${INDENT}wav2mp3 Converting $INF => $OUTF"
+	flac -V -o "$OUTF" "$INF"
+	flac2mp3 "$OUTF"
+}
+
+function traveldir ()
+{
+	dir="$1"
+
+	pushd "$dir" > /dev/null
+	echo "Entering: `pwd`"
+
+	for a in *
+	do
+		if test -d "$a" ; then
+			traveldir "$a"
+		else
+			if [[ `expr match "$a" '.*\\.flac$'` > 0 ]] ; then
+				flac2mp3 "$a"
+			elif [[ `expr match "$a" '.*\\.wav$'` > 0 ]] ; then
+				wav2mp3 "$a"
+			else
+				echo "${INDENT}Skipping: $a"
+			fi
+		fi
+	done
+	popd > /dev/null
+}
+
+################################################################################
+# main()
+################################################################################
+
+if [[ $# < "2" ]] ; then
+	usage
+	exit 1
+fi
+
+SRCDIR="$1"
+DESTDIR="$2"
+
+if [[ ! -e "$DESTDIR" ]] ; then
+	mkdir -p "$DESTDIR"
+fi
+
+if [[ ! -e "$SRCDIR" ]] ; then
+	echo "$SRCDIR does not exist!"
+	exit 2
+fi
+
+# Get absolute directories
+SRCDIR=$(absname "$SRCDIR")
+DESTDIR=`absname "$DESTDIR"`
+
+SRCDIRLEN=`expr length "$SRCDIR"`
+INDENT="    "
+
+pushd . > /dev/null
+traveldir "$SRCDIR"
+popd > /dev/null

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Bash Includes.
+# source $HOME/.bash/lib/realpath-lib
+#source $HOME/.bash/lib/book-lib

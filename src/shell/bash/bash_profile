@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+get_os() {
+
+    local os=""
+    local kernelName=""
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    kernelName="$(uname -s)"
+
+    if [ "$kernelName" == "Darwin" ]; then
+        os="macos"
+    elif [ "$kernelName" == "Linux" ] && [ -e "/etc/lsb-release" ]; then
+        os="ubuntu"
+    else
+        os="$kernelName"
+    fi
+
+    printf "%s" "$os"
+
+}
+
+source_bash_files() {
+
+    declare -r CURRENT_DIRECTORY="$(pwd)"
+
+    declare -r -a FILES_TO_SOURCE=(
+        "aliases/bash_aliases"
+        "autocomplete/bash_autocomplete"
+        "autocomplete/git_autocomplete"
+        "bash_exports"
+        "bash_includes"
+        "bash_functions"
+        "bash_options"
+        "bash_prompt"
+        # Clear console on exit to increase privacy
+        "bash_logout"
+        "$HOME/.bash.local"  # For local settings that should not be under version control.
+
+    )
+
+    local file=""
+    local i=""
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")"
+
+    # shellcheck disable=SC2034
+    declare -r OS="$(get_os)"
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    for i in ${!FILES_TO_SOURCE[*]}; do
+
+        file="$HOME/.bash/${FILES_TO_SOURCE[$i]}"
+
+        [ -r "$file" ] \
+            && . "$file"
+
+    done
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    cd "$CURRENT_DIRECTORY"
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+source_bash_files
+
+# Remove Unused Function Alias. Important after renaming or removing a function in your .bashrc file.
+# unset -f my_function
+unset -f source_bash_files
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Clear system messages (system copyright notice, the date
+# and time of the last login, the message of the day, etc.).
+#clear

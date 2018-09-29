@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+
+if [ -z $1  ]
+  then
+    echo 'Не указан файл для конвертации!'
+    exit 1
+fi
+
+#printf $(dirname "$(realpath $1)")
+
+hash pandoc 2>/dev/null || { echo >&2 "Please install pandoc. Aborting."; exit 1; }
+hash pdftk 2>/dev/null || { echo >&2 "Please install pdftk. Aborting."; exit 1; }
+hash ebook-convert 2>/dev/null || { echo >&2 "Please install ebook-convert.  Aborting."; exit 1; }
+
+SOURCE=contents.md
+
+PRINT_DESTINATION=Book-print.pdf
+PDF_DESTINATION=Book.pdf
+PREVIEW_DESTINATION=Book-Preview.pdf
+EPUB_DESTINATION=Book.epub
+MOBI_DESTINATION=Book.mobi
+METADATA=metadata.txt
+
+PRINT_COVER=cover.png
+PRINT_BACK_COVER=cover.png
+EBOOK_COVER=cover.png
+EBOOK_BACK_COVER=back_cover.png
+EPUB_COVER=cover.png
+
+MAIN_FONT="Helvetica"
+SANS_FONT="OpenSans"
+MONO_FONT="monospace"
+
+FONT_SIZE=12
+EPUB_TITLE=title.txt
+PREVIEW_PAGE_RANGE=1-8
+
+# EPUB version
+echo "++++++++ Generate EPUB version"
+pandoc --toc -o $EPUB_DESTINATION $METADATA $1
+
+if [ $? -ne 0 ]; then
+    echo "EPUB generation failed. Aborting.";
+    exit 1;
+fi
+
+# Mobi version
+echo "++++++++ Generate PDF version"
+ebook-convert $EPUB_DESTINATION $PDF_DESTINATION \
+    --language="ru" \
+    --paper-size a4 \
+    --cover=$EBOOK_COVER \
+    --preserve-cover-aspect-ratio \
+    --chapter="//h:h1[@class='title']" \
+    --chapter-mark="none" \
+    --page-breaks-before="/" \
+    --level1-toc="//h:h1[@class='title']" \
+    --no-chapters-in-toc \
+    --pdf-add-toc \
+    --toc-title="Содержание:" \
+    --pdf-mono-family=$MONO_FONT \
+    --pdf-mono-font-size $FONT_SIZE \
+    --pdf-sans-family=$SANS_FONT \
+    --pdf-serif-family=$MAIN_FONT \
+    --pdf-standard-font="serif" \
+    --pdf-default-font-size $FONT_SIZE \
+    --pdf-footer-template="<hr color=#d3002d width="100%"><p class='footer'><span style='float:right;'>_PAGENUM_</span></p>" \
+    --pdf-page-numbers
+
+echo "++++++++ Done"

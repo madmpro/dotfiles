@@ -1,0 +1,191 @@
+#!/bin/bash
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# For a full list of active aliases, run `alias`.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Just for fun
+alias fcl="fortune | cowsay | lolcat"
+
+eval "$(thefuck --alias)"
+
+alias starwars="telnet towel.blinkenlights.nl"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Lists the ten most used commands.
+alias history-stat="history | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+# history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n10
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Easier navigation: .., ..., ~ and -
+alias ..="cd .."
+alias cd..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+
+alias tmp="cd /tmp"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Navigate more easily
+alias proj='cd ~/Projects'
+alias docs='cd ~/Documents'
+alias pics='cd ~/Pictures'
+
+[[ -d "$HOME/Projects/dotfiles" ]] && alias dot="cd $HOME/Projects/dotfiles"
+[[ -d "$HOME/Projects/Bash/Tutorials" ]] && alias tut="cd $HOME/Projects/Bash/Tutorials"
+[[ -d "$HOME/Projects/blog" ]] && alias blog="cd $HOME/Projects/blog"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias :q="exit"
+alias q="exit"
+alias clr="clear"
+alias clrmail=": > /var/mail/$USER"
+alias ch="history -c && > ~/.bash_history"
+alias e="$EDITOR"
+
+alias m="man"
+alias map="xargs -n1"
+alias n="npm"
+
+alias rmf="rm -rf --"
+alias t="tmux"
+alias v="vim --"
+alias where=which # sometimes i forget
+alias xx="chmod +x"
+alias 755="find . -exec chmod 755 {} \;"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias path='printf "%b\n" "${PATH//:/\\n}"'
+
+# Add a function that cleans up the $PATH variable and removes duplicate entries
+# ------------------------------------------------------------------------------
+# https://unix.stackexchange.com/questions/14895/duplicate-entries-in-path-a-problem
+
+rmpathdups() {
+  # does not overwrite if there is an error
+  PATH_NO_DUPS=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}') && export PATH=$PATH_NO_DUPS
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Be nice
+alias htop='sudo htop'
+alias hosts='sudo $EDITOR /etc/hosts'   # yes I occasionally 127.0.0.1 twitter.com ;)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Listing
+
+# Use coreutils `ls` if possible
+hash gls >/dev/null 2>&1 || alias gls="ls"
+
+# Always use color output for `ls`
+# Detect which `ls` flavor is in use
+if gls --color > /dev/null 2>&1; then # GNU `ls`
+  colorflag="--color"
+else # OS X `ls`
+  colorflag="-G"
+fi
+
+
+case "${OSTYPE}" in
+linux*)
+colorflag='--color=auto'
+;;
+darwin*)
+colorflag="-G"
+;;
+esac
+
+export CLICOLOR_FORCE=1
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias l="ls -lF ${colorflag}" # List all files colorized in long format
+alias ll="ls -alF ${colorflag}"
+alias ls="ls -AFh ${colorflag}" # ls options: A = include hidden (but not . or ..), F = put `/` after folders, h = byte unit suffixes
+alias lsa="ls -la ${colorflag}" # List all files colorized in long format, including dot files
+alias lsd='ls -l | grep "^d"' # List only directories
+alias lst='ls -Ggthrc'				# ls by time/changes, newest at bottom
+alias lne="ls -d !(*.*)"      # List all files that do not have extensions
+# Add lso function that works like ls but prints octal permissions
+# https://askubuntu.com/questions/152001/how-can-i-get-octal-file-permissions-from-command-line
+# http://askubuntu.com/a/152005/145754
+lso() { ls -alG "$@" | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print}'; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Tree
+if [ ! -x "$(which tree 2>/dev/null)" ]
+then
+  alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Python
+alias python="python3"
+alias pip="pip3.6"
+
+# Update outdated python packages
+alias PipU="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Copy my public key to the pasteboard
+alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | printf '=> Public key copied to pasteboard.\n'"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Get week number
+alias week='date +%V'
+
+# Stopwatch
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+
+# Show active network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# View HTTP traffic
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias netlisten='lsof -i -P | grep LISTEN'   # listening ports
+alias wget="wget -c" # continue the download in case of problems
+alias histg="history | grep"
+
+# Check if the server is under DDoS attack (HTTP, HTTPS)
+alias CheckDDoS="netstat -an | egrep ':80|:443' | grep ESTABLISHED | awk '{print $5}' | grep -o -E '([0-9]{1,3}[\.]){3}[0-9]{1,3}' | sort -n | uniq -c | sort -nr"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Show my ext IP
+alias myip="dig +short @resolver1.opendns.com myip.opendns.com"
+#alias myip="curl http://ipecho.net/plain; echo"
+
+# Purge terminal mails
+alias clearmail="echo 'd *' | mail -N"
+
+# Google Search from terminal
+alias googler='DISABLE_PROMPT_COLOR=1 googler --colors GKlgxy -n 7 -c ru -l ru'
+
+# Load OS specific aliases.
+
+[[ -f "$HOME/.bash/aliases/$OS/bash_aliases" ]] && . "$HOME/.bash/aliases/$OS/bash_aliases"
+
+[[ -f "$HOME/.bash/aliases/git_aliases" ]] && . "$HOME/.bash/aliases/git_aliases"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Include local aliases that you don't want exposed online
+[[ -f "$HOME/.bash/aliases/local_aliases" ]] && . "$HOME/.bash/aliases/local_aliases"
+
+alias removeduplicates="awk 'seen[$0]++{print|\"cat>&2\";next}1' $0 > $1" #&& mv tmp file

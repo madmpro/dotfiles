@@ -1,0 +1,75 @@
+"                ___    ____  __  ___
+"     ____ ___  /   |  / __ \/  |/  / ____  _________
+"    / __ `__ \/ /| | / / / / /|_/ / / __ \/ ___/ __ \
+"   / / / / / / ___ |/ /_/ / /  / / / /_/ / /  / /_/ /
+"  /_/ /_/ /_/_/  |_/_____/_/  /_(_) .___/_/   \____/
+"                                 /_/
+"
+"   Main Contributor: mADM.pro (madm.pro) <madm.pro@gmail.com>
+"   Version: 1.0
+"   Created: 2017-11-10
+"   Last Modified: 2017-11-10
+"
+"
+"   Sections:
+"     -> General Settings
+"     -> Platform Specific Setting
+"     -> Vim-plug
+"     -> User Interface
+"     -> Colors and Fonts
+"     -> Indent Related
+"     -> Search Related
+"     -> Fold Related
+"     -> Key Mapping
+"     -> Plugin Setting
+"     -> Local Setting
+"
+
+" ----------------------------------------------------------------------
+" => Includes                                                          |
+" ----------------------------------------------------------------------
+
+" Vim plugins
+so ~/.vim/plugins.vim
+so ~/.vim/plugin_settings.vim
+so ~/.vim/general_settings.vim
+so ~/.vim/platform_settings.vim
+so ~/.vim/helper_functions.vim
+so ~/.vim/automatic_commands.vim
+so ~/.vim/colors.vim
+so ~/.vim/key_mappings.vim
+so ~/.vim/status_line.vim
+
+" ----------------------------------------------------------------------
+" | Local Settings                                                     |
+" ----------------------------------------------------------------------
+
+" Load local settings if they exist.
+"
+" [!] The following needs to remain at the end of this file in
+"     order to allow any of the above settings to be overwritten
+"     by the local ones.
+
+if filereadable(glob("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
+
+" ----------------------------------------------------------------------
+" | Notes and Tips                                                     |
+" ----------------------------------------------------------------------
+" - Press 'zz' to instantly center the line where the cursor is located.
+" - Press Ctrl+] in a method to go to the file where the method is defined.
+" - Press Ctrl+^ to go back to the previous location (buffer).
+" - Press 'gg' to go to the top, Shift+g to the bottom.
+" - Select text in visual mode then press Shift+s to type a surrounding tag
+" - Example surrounding tag: 'cs a b' replaces the surrounding a with b
+" - Example surrounding tag 2: 'ds a' deletes the surrounding a
+" - Double Esc to clear the highlight after search
+" - Type ':ls' to list all opened buffers
+" - Shift+j joins the current line with the bottom line
+" - Ctrl+o goes back to the previous edit point, and Ctrl+i goes forward
+" - Press 'yiw' to yank a word
+" - Press 'daw' to delete a word under the cursor, 'caw' to delete the word
+"   and put in insert mode
+" - Press 'o' to insert a new line below, Shift+o for a new line above
+" - Press ,c<space> to toggle a comment

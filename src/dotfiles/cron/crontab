@@ -1,0 +1,13 @@
+#=====================================================================#
+# General                                                             #
+#=====================================================================#
+#  Min  |  Hour  |  Mday  |  Month  |  Wday  |  Command               #
+#=====================================================================#
+   *       *        *        *         *        $HOME/.cron/minutely.sh
+   0       3        *        *         *        $HOME/.cron/daily-nighttime.sh
+   0       12       *        *         *        $HOME/.cron/daily-daytime.sh
+   0       14       *        *         *        $HOME/.cron/twice-daily-daytime.sh
+   0       20       *        *         *        $HOME/.cron/twice-daily-daytime.sh
+   0       0        *        *         0        $HOME/.cron/weekly.sh
+#  */15    *        *        *         *        $HOME/bin/temp-help.sh
+#=====================================================================#

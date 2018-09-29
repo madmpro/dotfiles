@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Creates something for me to do.
+#
+# I've used literally every todo list, app, program, script, everything. Even
+# the ones you are building and haven't released yet.
+#
+# I've found that they're all nice in their nice ways, but I still don't use
+# them, thus defeating the purpose of a todo list.
+#
+# All `todo` does is put a file on my Desktop with the filename given.
+
+if [ -z $1  ]
+  then
+    echo 'Не указана задача!'
+    exit 1
+fi
+
+
+PathToDir="$HOME/Desktop/ToDo"
+set -e
+
+if [ ! -d $PathToDir ]
+then
+  mkdir -p $PathToDir
+  touch $PathToDir/"$*"
+
+else
+  touch $PathToDir/"$*"
+fi

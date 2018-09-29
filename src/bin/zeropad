@@ -1,0 +1,8 @@
+#!/bin/bash
+# # http://www.walkingrandomly.com/?p=2850
+num=`expr match "$1" '[^0-9]*\([0-9]\+\).*'`
+
+# You may want to change the number of digits used in each filename from 3 to 5 (say).
+# To do this just change %03d to %05d
+paddednum=`printf "%03d" $num`
+echo ${1/$num/$paddednum}

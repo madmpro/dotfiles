@@ -1,0 +1,18 @@
+\n
+  Effective URL: %{url_effective}\n
+  Status       : %{http_code}\n
+  Content type : %{content_type}\n
+  Redirects    : %{num_redirects}\n
+  \n
+  Header size  : %{size_header} bytes\n
+  Total size   : %{size_download} bytes\n
+  Avg. DL speed: %{speed_download} bytes/sec\n
+  \n
+  DNS lookup    : %{time_namelookup}s\n
+  Connect       : %{time_connect}s\n
+  App connect   : %{time_appconnect}s\n
+  Pre-transfer  : %{time_pretransfer}s\n
+  Redirect      : %{time_redirect}s\n
+  Start transfer: %{time_starttransfer}s\n
+  Total time    : %{time_total}s\n
+\n

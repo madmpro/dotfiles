@@ -1,0 +1,609 @@
+#!/bin/bash
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+me=$HOME/.bash/bash_functions
+
+function bash_functions() # Show availlable bash functions from this file
+{
+    grep "^function" "$me" | awk '{$1=""; print}'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function datauri() # Create data URI from a file.
+{
+
+    local mimeType=""
+
+    if [ -f "$1" ]; then
+        mimeType=$(file -b --mime-type "$1")
+        #                └─ do not prepend the filename to the output
+
+        if [[ $mimeType == text/* ]]; then
+            mimeType="$mimeType;charset=utf-8"
+        fi
+
+        printf "data:%s;base64,%s" \
+                    "$mimeType" \
+                    "$(openssl base64 -in "$1" | tr -d "\n")"
+    else
+        printf "%s is not a file.\n" "$1"
+    fi
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function la() # List all files, long format, colorized, permissions in octal
+{
+   ls -l  "$@" | awk '
+    {
+      k=0;
+      for (i=0;i<=8;i++)
+        k+=((substr($1,i+2,1)~/[rwx]/) *2^(8-i));
+      if (k)
+        printf("%0o ",k);
+      printf(" %9s  %3s %2s %5s  %6s  %s %s %s\n", $3, $6, $7, $8, $5, $9,$10, $11);
+    }'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function f() # Find shorthand
+{
+  find . -name "$1" 2>&1 | grep -v 'Permission denied'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function qfind() # Quickly find files that contain a string in a directory
+{
+  find . -exec grep -l -s $1 {} \;
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function delete-files() # Delete files that match a certain pattern from the current directory.
+{
+    local q="${1:-*.DS_Store}"
+    find . -type f -name "$q" -ls -delete
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function cdf() # cd into whatever is the forefront Finder window.
+{  # short for cdfinder
+  cd "`osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)'`"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function cp_p()  # Copy w/ progress
+{
+  rsync -WavP --human-readable --progress $1 $2
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function gzinfo() # Get gzip information (gzipped file size + reduction size).
+{
+
+    declare -i gzippedSize=0
+    declare -i originalSize=0
+
+    if [ -f "$1" ]; then
+        if [ -s "$1" ]; then
+
+            originalSize=$( wc -c < "$1" )
+            printf "\n original size:   %12s\n" "$(hrfs "$originalSize")"
+
+            gzippedSize=$( gzip -c "$1" | wc -c )
+            printf " gzipped size:    %12s\n" "$(hrfs "$gzippedSize")"
+
+            printf " ─────────────────────────────\n"
+            printf " reduction:       %12s [%s%%]\n\n" \
+                        "$( hrfs $((originalSize - gzippedSize)) )" \
+                        "$( printf "%s" "$originalSize $gzippedSize" | \
+                            awk '{ printf "%.1f", 100 - $2 * 100 / $1 }' | \
+                            sed -e "s/0*$//;s/\.$//" )"
+                            #              └─ remove tailing zeros
+
+        else
+            printf "\"%s\" is empty.\n" "$1"
+        fi
+    else
+        printf "\"%s\" is not a file.\n" "$1"
+    fi
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function targz() # Create .tar.gz
+{
+  tar -zcvf $1.tar.gz $1; rm -r $1;
+}
+# extra .tar.gz
+function untargz()
+{
+  tar -zxvf $1; rm -r $1;
+}
+
+
+function numfiles() # Count number of files in a directory
+{
+    N="$(ls $1 | wc -l)";
+    echo "$N files in $1";
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# (because `du -h` doesn't cut it for me).
+function hrfs() # Human readable file size
+{
+
+    printf "%s" "$1" |
+    awk '{
+            i = 1;
+            split("B KB MB GB TB PB EB ZB YB WTFB", v);
+            value = $1;
+
+            # confirm that the input is a number
+            if ( value + .0 == value ) {
+
+                while ( value >= 1024 ) {
+                    value/=1024;
+                    i++;
+                }
+
+                if ( value == int(value) ) {
+                    printf "%d %s", value, v[i]
+                } else {
+                    printf "%.1f %s", value, v[i]
+                }
+
+            }
+        }' |
+    sed -e ":l" \
+        -e "s/\([0-9]\)\([0-9]\{3\}\)/\1,\2/; t l"
+    #    └─ add thousands separator
+    #       (changes "1023.2 KB" to "1,023.2 KB")
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function md() # Create a new directory and enter it
+{
+  mkdir -p "$@" && cd "$@"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+function mkd() # Create new directories and enter the first one.
+{
+    if [ -n "$*" ]; then
+
+        mkdir -p "$@"
+        #      └─ make parent directories if needed
+
+        cd "$@" \
+            || exit 1
+
+    fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function qh() # Search history.
+{
+    #           ┌─ enable colors for pipe
+    #           │  ("--color=auto" enables colors only if
+    #           │  the output is in the terminal)
+    grep --color=always "$*" "$HISTFILE" |       less -RX
+    # display ANSI color escape sequences in raw form ─┘│
+    #       don't clear the screen after quitting less ─┘
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function qt() # Search for text within the current directory.
+{
+    grep -ir --color=always "$*" --exclude-dir=".git" --exclude-dir="node_modules" . | less -RX
+    #     │└─ search all files under each directory, recursively
+    #     └─ ignore case
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function gitnr() # Create a new git repo with one README commit and CD into it
+{
+  mkdir $1; cd $1; git init; touch README; git add README; git commit -mFirst-commit;
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# ex.: manp vim
+function manp() # Use Mac OS Preview to open a man page in a more handsome format
+{
+  man -t $1 | open -f -a /Applications/Preview.app
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function fixperms() # Fix permissions for .sh files
+{
+    find . \( -name "*.sh" -or -type d \) -exec chmod 755 {} \; && find . -type f ! -name "*.sh" -exec chmod 644 {} \;
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function mkd() # Create a new directory and enter it
+{
+  mkdir -p "$@" && cd "$_";
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function macvendorlookup () # Lookup MAC vendor
+{
+    curl -s "http://www.macvendorlookup.com/api/v2/$*" | jq '.[] | .company'
+    # curl -s "http://api.macvendors.com/$*"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function weather() # Weather seattle
+{
+  weather_city="${1:-"${CITY}"}"
+  weather_lang="${2:-"$(echo "$LANG" | head -c 2)"}"
+
+  if [ -z "$weather_city" ]; then
+    echo '[ERROR] Could not resolve your city'
+
+    return 1
+  fi
+
+  if [ -z "$weather_lang" ]; then
+    echo '[ERROR] Could not resolve your language'
+
+    return 1
+  fi
+
+  curl -Ss "http://${weather_lang}.wttr.in/${weather_city}"
+
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function camerausedby() # Who is using the laptop's iSight camera?
+{
+  echo "Checking to see who is using the iSight camera… 📷"
+  usedby=$(lsof | grep -w "AppleCamera\|USBVDC\|iSight" | awk '{printf $2"\n"}' | xargs ps)
+  echo -e "Recent camera uses:\n$usedby"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# from alex sexton   gist.github.com/SlexAxton/4989674
+function gifify() # Animated gifs from any video
+{
+  if [[ -n "$1" ]]; then
+	if [[ $2 == '--good' ]]; then
+	  ffmpeg -i "$1" -r 10 -vcodec png out-static-%05d.png
+	  time convert -verbose +dither -layers Optimize -resize 900x900\> out-static*.png  GIF:- | gifsicle --colors 128 --delay=5 --loop --optimize=3 --multifile - > "$1.gif"
+	  rm out-static*.png
+	else
+	  ffmpeg -i "$1" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > "$1.gif"
+	fi
+  else
+	echo "proper usage: gifify <input_movie.mov>. You DO need to include extension."
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# brew reinstall ffmpeg --with-libvpx
+function webmify() # Turn that video into webm.
+{
+	ffmpeg -i "$1" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$2" "$1.webm"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function nullify() # Direct it all to /dev/null
+{
+  "$@" >/dev/null 2>&1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Execute commands for each file in current directory.
+function each() {
+  for dir in *; do
+    # echo "${dir}:"
+    cd $dir
+    $@
+    cd ..
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# $ ram safari
+# # => safari uses 154.69 MBs of RAM.
+function ram() # Show how much RAM application uses.
+{
+  local sum
+  local items
+  local app="$1"
+  if [ -z "$app" ]; then
+    echo "First argument - pattern to grep from processes"
+  else
+    sum=0
+    for i in `ps aux | grep -i "$app" | grep -v "grep" | awk '{print $6}'`; do
+      sum=$(($i + $sum))
+    done
+    sum=$(echo "scale=2; $sum / 1024.0" | bc)
+    if [[ $sum != "0" ]]; then
+      echo "${fg[blue]}${app}${reset_color} uses ${fg[green]}${sum}${reset_color} MBs of RAM."
+    else
+      echo "There are no processes with pattern '${fg[blue]}${app}${reset_color}' are running."
+    fi
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# hist git
+function hist() # Shortcut for searching commands history.
+{
+  history | grep $@
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+##### Just For Fun ####################################################
+
+# 4 lulz.
+function compute()
+{
+  while true; do head -n 100 /dev/urandom; sleep 0.1; done \
+    | hexdump -C | grep "ca fe"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# print available colors and their numbers
+colours()
+{
+  for i in {0..255}; do
+      printf "\x1b[38;5;${i}mcolour%-5i\x1b[0m" $i
+      if ! (( ($i + 1 ) % 8 )); then echo ; fi ;
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function matrix1()
+{
+
+  echo -e "\e[1;40m" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|gawk '{ letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function matrix2()
+{
+
+  echo -e "\e[1;40m" ; clear ; characters=$( jot -c 94 33 | tr -d '\n' ) ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) $characters ;sleep 0.05; done|gawk '{ letters=$5; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+commandExists()
+{
+    type "$1" &> /dev/null ;
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function mach() # Displays the basic information about the system
+{
+    echo -e "\nMachine information:" ; uname -a
+    echo -e "\nUsers logged on:" ; w -h
+    echo -e "\nCurrent date :" ; date
+    echo -e "\nMachine status :" ; uptime
+    echo -e "\nMemory status :" ; free
+    echo -e "\nFilesystem status :"; df -h
+}
+
+function fk() # Build menu to kill process
+{
+    IFS=$'\n'
+    PS3='Kill which process? '
+    select OPT in $(fp $1) "Cancel"; do
+        if [ $OPT != "Cancel" ]; then
+            kill $(echo $OPT|awk '{print $NF}')
+        fi
+        break
+    done
+    unset IFS
+}
+
+##### MAC ONLY #####################################################
+if [ `uname` == "Darwin" ]; then
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function finder1() # Show current Finder directory.
+{
+  osascript 2>/dev/null <<EOF
+    tell application "Finder"
+      return POSIX path of (target of window 1 as alias)
+    end tell
+EOF
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# $ get-pass github
+function get-pass() # Gets password from macOS Keychain.
+{
+  keychain="$HOME/Library/Keychains/login.keychain"
+  security -q find-generic-password -g -l $@ $keychain 2>&1 |\
+    awk -F\" '/password:/ {print $2}';
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function wav-pcm8000() # Convert all wav audio files to 8bit PCM 8000Hz Wave for Asterisk IVR menu
+{
+
+  for file in $(ls *wav)
+  do
+    name=${file%%.wav}
+    afconvert -d "LEI16@8000" -f "WAVE" $name.wav $name.C.wav
+  done
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function pingsay() # Using the Say Command in Terminal
+{
+
+  { while true; do ping "$1" -c 1 > /dev/null 2>&1 && echo "ping" && sleep 0.7; done } | { while read line; do say $line & done }
+
+}
+function notify()
+{
+  if [ $# -eq 1  ]; then
+    osascript -e "display notification \"$1\" with title \"Notification\""
+  elif [ $# -eq 2  ]; then
+    osascript -e "display notification \"$2\" with title \"$1\""
+  elif [ $# -eq 3  ]; then
+    osascript -e "display notification \"$3\" with title \"$1\"  subtitle \"$2\""
+  else
+    echo "Can only be run with 1/2/3 arguments"
+  fi
+}
+
+function play()
+{
+  for i in "$@"; do
+    echo "Playing: $i"
+    afplay "$i"
+  done
+}
+
+function play_random()
+{
+  find . -iname "*.mp3" | sort -R | while read a; do echo "$a"; afplay "$a"; done
+}
+
+# https://apple.stackexchange.com/questions/107297/how-can-i-play-a-midi-file-from-terminal
+function playmidi
+{
+
+    SOUNDFONT="$HOME/Projects/dotfiles/src/lib/MIDI/GeneralUser GS 1.471/GeneralUser GS v1.471.sf2"
+
+    if [ -e "$SOUNDFONT" ]
+    then
+
+        for i in "$@"
+        do
+            if [ -e "$i" ]
+            then
+                (fluidsynth -i "$SOUNDFONT" "$i"  2>&1) >/dev/null
+            else
+                echo "[playmidi]: cannot find file at $i"
+                return 1
+            fi
+        done
+    else
+            echo "[playmidi]: SOUNDFONT file not found at $SOUNDFONT"
+            return 1
+    fi
+}
+
+fi
+##### END MAC ONLY #####################################################
+
+
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Whiteboard Picture Cleaner - Shell one-liner/script to clean up and beautify photos of whiteboards!
+# https://gist.github.com/lelandbatey/8677901
+# whiteboardCleaner example.jpg output.png
+function whiteboardCleaner() # Script to clean up and beautify photos of whiteboards! V1
+{
+
+  convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "$2"
+
+}
+
+function whiteboardCleaner2() # Script to clean up and beautify photos of whiteboards! V2
+{
+
+  convert "$1" \( +clone -blur 0x20 \) -compose Divide_Src -composite -normalize -level 10%,90% -deskew 40% -unsharp 0x5+2+0 "$2"
+
+}
+
+function whiteboardCleaner3() # Script to clean up and beautify photos of whiteboards! V3
+{
+
+  convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "cleaned_$1"
+
+  convert "cleaned_$1" -fuzz 80% -trim +repage "trimmed_$1"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function typing-echo () # echo "You can simulate on-screen typing just like in the movies" | pv -qL 10
+{
+    echo "$@" | pv -qL 10
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function forgethost () # Clear known_hosts
+{ sed -i "${1}d" "$HOME/.ssh/known_hosts"; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# convert binaries
+# copyright 2007 - 2010 Christopher Bratusek
+function bin2all() {
+	if [[ $1 ]]; then
+		echo "binary $1 = octal $(bin2oct $1)"
+		echo "binary $1 = decimal $(bin2dec $1)"
+		echo "binary $1 = hexadecimal $(bin2hex $1)"
+		echo "binary $1 = base32 $(bin2b32 $1)"
+		echo "binary $1 = base64 $(bin2b64 $1)"
+		echo "binary $1 = ascii $(bin2asc $1)"
+	fi
+}
+
+# Readablity CLI
+# Removes junk from websites and just give you the body of the post
+# requires python2-2.7 & python2-chardet
+# https://github.com/buriy/python-readability
+# ebook-convert from http://manual.calibre-ebook.com/cli/ebook-convert.html
+function readability2epub()
+{
+	python2.7 -m readability.readability -u "$1" > /tmp/"$2".html
+	ebook-convert /tmp/"$2".html ~/Downloads/"$2".epub
+}

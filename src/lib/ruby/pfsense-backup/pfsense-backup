@@ -1,0 +1,89 @@
+#!/usr/bin/ruby
+# https://github.com/Win2ix/pfsense-backup
+
+require 'optparse'
+require 'highline/import'
+require 'net/scp'
+
+# Display help if no arguments given.
+ARGV << '-h' if ARGV.empty?
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options] servers"
+
+  opts.separator ""
+
+  opts.on('-u', '--username (username)',
+          'Defaults to current user') do |u|
+    options[:username] = u
+  end
+
+  opts.on('-k', '--key (ssh key)',
+          'Defaults to ~/.ssh/id_rsa or ~/.ssh/id_dsa (if present)') do |k|
+    options[:sshkey] = k
+  end
+
+  opts.on('-p', '--port (ssh port)',
+          'Defaults to 22') do |p|
+    options[:port] = p
+  end
+
+  opts.on('-d', '--dir (output directory)',
+          'Defaults to current directory') do |d|
+    options[:outdir] = d
+  end
+
+  opts.on('-h', '--help', 'Show this help') do
+    puts opts
+    exit
+  end
+end.parse!
+
+if ARGV.length == 0
+  puts "No servers specified"
+  exit 1
+end
+
+# Default to current user.
+user = options[:username] || ENV['USER']
+
+# Default port.
+port = options[:port] || 22
+
+# Default ssh key
+ssh_key = options[:sshkey] || Dir.glob("#{ENV['HOME']}/.ssh/id_?sa")[0]
+
+# Default outpud directory
+outdir = options[:outdir] || '.'
+
+unless File.directory?(outdir)
+  puts "Directory #{outdir} does not exist."
+  exit 1
+end
+
+outdir += '/'
+
+ARGV.each do |host|
+  unless File.file?(ssh_key.to_s)
+    # Warn if key isn't found.
+    puts "No ssh keys found."
+
+    # Use a password instead.
+    begin
+      pass = ask("#{user}@#{host}'s password: ") { |q| q.echo = false }
+    rescue => e
+      puts e
+    end
+  end
+
+  begin
+    outfile = "config-#{host}-#{Time.now.strftime "%Y%m%d%k%M%S"}.xml"
+    Net::SCP.start(host, user, :password => pass, :port => port) do |scp|
+      puts "Downloading " + outfile
+      scp.download('/conf/config.xml', outdir + outfile)
+    end
+  rescue => e
+    puts e
+  end
+end

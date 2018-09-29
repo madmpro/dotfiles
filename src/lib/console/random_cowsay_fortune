@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# before running
+# apt-get install cowsay fortune
+
+COW_FILES_DIR="/usr/share/cowsay/cows/"
+COW_FILE_ORDER=$(( (RANDOM %51) + 2))
+RDM_COW_FILE=$(ls -l $COW_FILES_DIR | tail -n +$COW_FILE_ORDER | head -n 1 | awk '{print $9}')
+RDM_COW_PATH="$COW_FILES_DIR$RDM_COW_FILE"
+
+fortune | cowsay -f $RDM_COW_PATH

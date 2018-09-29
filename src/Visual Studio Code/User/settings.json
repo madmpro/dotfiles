@@ -1,0 +1,60 @@
+{
+  //////////////////////////////////////////////////////////////////////////////
+  // BUILT-INS /////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // editor
+  "editor.fontFamily": "'Knack Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+  "editor.formatOnPaste": true,
+  "editor.renderWhitespace": "all",
+  "editor.minimap.enabled": false,
+  "editor.codeLens": false,
+  "editor.rulers": [
+    80
+  ],
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+
+  // files
+  "files.exclude": {
+    "**/.vagrant": true,
+    "**/node_modules": true
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.autoSave": "on",
+  // workbench
+  "workbench.colorTheme": "One Dark Pro",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.startupEditor": "newUntitledFile",
+
+  //////////////////////////////////////////////////////////////////////////////
+  // PLUG-INS //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // eslint
+  "eslint.autoFixOnSave": true,
+
+  // git project manager
+  "gitProjectManager.baseProjectsFolders": [
+    "~/dotfiles",
+    "~/Development/src"
+  ],
+  "gitProjectManager.ignoredFolders": ["node_modules"],
+  "gitProjectManager.storeRepositoriesBetweenSessions": true,
+
+  // material icon theme
+  "material-icon-theme.showUpdateMessage": false,
+
+  // vim
+  "vim.easymotion": true,
+  "vim.disableAnnoyingNeovimMessage": true,
+  "vim.leader": "<space>",
+  "vim.useSystemClipboard": true,
+  "vim.handleKeys": {
+    "<C-h>": false,
+    "<C-j>": false,
+    "<C-k>": false,
+    "<C-l>": false
+  }
+}

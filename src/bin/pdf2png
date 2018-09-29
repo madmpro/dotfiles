@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+    echo -e "convert PDF document to PNG image (default dpi is 150)"
+    echo -e "\nUsage:\n$0 <pdf> <dpi> <startingpage> <endingpage>"
+    echo -e "\nall pages to images:\n$0 file.pdf"
+    echo -e "\nchange dpi (common dpi are 150, 300, 600):\n$0 file.pdf 300"
+    echo -e "\nsingle page to image:\n$0 file.pdf 300 5"
+    echo -e "\nmultiple pages to images:\n$0 file.pdf 300 5 12"
+
+    return 1
+fi
+convert -density "${2:-300}" $1[] "${1%.pdf}.png"

@@ -1,0 +1,39 @@
+#!/bin/bash
+#created by Kris Occhipinti - https://filmsbykris.com
+#Fri Feb 9 2018
+#Licensed under GPLv3 - https://www.gnu.org/licenses/gpl-3.0.txt
+### This script converts all pdf files in a given dir to a one line text file  for quick searching   ###
+
+dir="/home/user/Documents"
+output="/home/user/.docsearch"
+func="$1"
+q="$*"
+
+if [ "$#" -lt "1" ]
+then
+  echo "Input needed."
+  echo "To update: $0 update"
+  echo "To search: $0 mazda"
+  exit 1
+fi
+
+function update(){
+  find "$dir" -iname "*.pdf"|while read pdf;
+  do
+    echo -n "${pdf}|";
+    pdftotext "$pdf" - |sed ':a;N;$!ba;s/\n/ /g';
+    echo "";
+  done > "$output"
+}
+
+function main(){
+  if [ "$func" = "update" ]
+  then
+    update;
+  else
+    echo "Searching for $q"
+    grep -i "$q" "$output"|cut -d\| -f1
+  fi
+}
+
+main

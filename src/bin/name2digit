@@ -1,0 +1,9 @@
+#!/bin/bash
+# http://stackoverflow.com/a/3211670
+# Renaming files in a folder to sequential numbers
+local a=1
+for i in `ls -v | grep -i "$1"`; do
+  new=$(printf "%04d.$1" "$a") #04 pad to length of 4
+  mv -i -- "${i}" "${new}" # using the -i flag prevents automatically overwriting existing files.
+  let a=a+1
+done
