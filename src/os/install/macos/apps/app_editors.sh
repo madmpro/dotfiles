@@ -26,6 +26,8 @@ execute \
      apm install 'tool-bar-markdown-writer' && \
      apm install 'language-vb' && \
      apm install 'language-vbscript' && \
+     apm install 'language-csv' && \
+     apm install 'pigments' && \
      apm install 'jekyll-syntax-highlighting'
      " \
     "Install Atom Plugins"

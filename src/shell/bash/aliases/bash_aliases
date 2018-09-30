@@ -41,7 +41,7 @@ alias pics='cd ~/Pictures'
 
 [[ -d "$HOME/Projects/dotfiles" ]] && alias dot="cd $HOME/Projects/dotfiles"
 [[ -d "$HOME/Projects/Bash/Tutorials" ]] && alias tut="cd $HOME/Projects/Bash/Tutorials"
-[[ -d "$HOME/Projects/blog" ]] && alias blog="cd $HOME/Projects/blog"
+[[ -d "$HOME/Projects/madmpro.github.io" ]] && alias blog="cd $HOME/Projects/madmpro.github.io"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -134,7 +134,7 @@ fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Python
 alias python="python3"
-alias pip="pip3.6"
+alias pip="pip3.7"
 
 # Update outdated python packages
 alias PipU="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U"

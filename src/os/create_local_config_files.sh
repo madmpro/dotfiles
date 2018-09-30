@@ -7,7 +7,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 
 create_bash_local() {
 
-    declare -r FILE_PATH="$HOME/.bash.local"
+    declare -r FILE_PATH="$HOME/.bash/bash.local"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

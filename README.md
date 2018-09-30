@@ -45,9 +45,9 @@ The setup process will:
 The `dotfiles` can be easily extended to suit additional local
 requirements by using the following files:
 
-#### `~/.bash.local`
+#### `~/.bash/bash.local`
 
-The `~/.bash.local` file it will be automatically sourced after
+The `~/.bash/bash.local` file it will be automatically sourced after
 all the other [`bash` related files](src/shell), thus, allowing
 its content to add to or overwrite the existing aliases, settings,
 PATH, etc.

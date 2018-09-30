@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# If you are sure you want to remove all commit history,
+# simply delete the .git directory in your project root (note that it's hidden).
+# Then initialize a new repository in the same folder and link it to the GitHub repository:
+git init
+git remote add origin git@github.com:user/repo
+
+#now commit your current version of code
+git add *
+git commit -am 'init'
+
+#and finally force the update to GitHub:
+git push -f origin master
+
+#However, I suggest backing up the history (the .git folder in the repository) before taking these steps!

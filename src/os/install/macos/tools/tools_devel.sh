@@ -38,12 +38,14 @@ declare -a FORMULAS=(
     "plenv"
     "perl-build"
     "pkg-config"
+    "pipenv"
     "qt"
     "readline"
     "shtool"
     "s-lang"
     "scipy"
     "shfmt"
+    "sphinx-doc"
     "watchman"      # Watches files and records, or triggers actions, when they change.
 
 

@@ -17,9 +17,11 @@
 "query:→ IT:tags # \"IT\"" "IT"
 "query:→ Linux:tags # \"Linux\"" "Linux"
 "query:→ MacOS:tags # \"MacOS\"" "MacOS"
+"query:→ Microsoft:tags # \"Microsoft\"" "Microsoft"
 "query:→ Network:tags # \"Network\"" "Network"
 "query:→ OpenSource:tags # \"OpenSource\"" "OpenSource"
 "query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
+"query:→ SystemCenter:tags # \"SystemCenter\"" "SystemCenter"
 "query:→ Software:tags # \"Software\"" "Software"
 "query:→ Tech:tags # \"Tech\"" "Tech"
 "query:→ YouTube:tags # \"YouTube\"" "YouTube"
@@ -56,6 +58,10 @@ http://feeds.feedburner.com/LinuxByExamples "Linux"
 MacOS
 ------------------------------
 https://www.macworld.com/index.rss "MacOS"
+------------------------------
+Microsoft
+------------------------------
+http://www.scconfigmgr.com/feed/ "Microsoft" "SystemCenter"
 ------------------------------
 Network
 ------------------------------
