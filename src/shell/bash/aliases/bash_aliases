@@ -34,17 +34,6 @@ alias tmp="cd /tmp"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# Navigate more easily
-alias proj='cd ~/Projects'
-alias docs='cd ~/Documents'
-alias pics='cd ~/Pictures'
-
-[[ -d "$HOME/Projects/dotfiles" ]] && alias dot="cd $HOME/Projects/dotfiles"
-[[ -d "$HOME/Projects/Bash/Tutorials" ]] && alias tut="cd $HOME/Projects/Bash/Tutorials"
-[[ -d "$HOME/Projects/madmpro.github.io" ]] && alias blog="cd $HOME/Projects/madmpro.github.io"
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 alias :q="exit"
 alias q="exit"
 alias clr="clear"
@@ -76,7 +65,6 @@ rmpathdups() {
   PATH_NO_DUPS=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}') && export PATH=$PATH_NO_DUPS
 }
 
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Be nice
@@ -97,7 +85,6 @@ if gls --color > /dev/null 2>&1; then # GNU `ls`
 else # OS X `ls`
   colorflag="-G"
 fi
-
 
 case "${OSTYPE}" in
 linux*)

@@ -166,5 +166,8 @@ if [ `uname` == "Darwin" ]; then
 
   alias todo="todo.sh"
 
+  # export defaults to file /tmp/defaults
+  alias deftmp="defaults read > /tmp/defaults"
+
 fi
 ##### MAC ONLY #####################################################

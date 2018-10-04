@@ -15,7 +15,9 @@ brew_install "f.lux" "flux" "caskroom/cask" "cask"
 brew_install "SiteSucker" "sitesucker" "caskroom/cask" "cask"
 brew_install "Gas Mask" "gas-mask" "caskroom/cask" "cask"
 
-brew_install "1Password" "1password" "caskroom/cask" "cask"
+# conflict with Chrome extension. Use download install.
+# brew_install "1Password" "1password" "caskroom/cask" "cask"
+
 brew_install "MacPass" "macpass" "caskroom/cask" "cask"
 
 #brew_install "VeraCrypt" "veracrypt" "caskroom/cask" "cask"

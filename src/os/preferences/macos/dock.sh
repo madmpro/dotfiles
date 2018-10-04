@@ -53,6 +53,10 @@ execute "defaults write com.apple.dock 'orientation' -string 'bottom'" \
 execute "defaults write com.apple.dock pinning -string 'middle'" \
         "Dock pinning: middle"
 
+# MacOS Mojave
+execute "defaults write com.apple.dock show-recents -bool false" \
+        "Hide recent apps in dock"
+        
 ##== Hot Corners ==============================================================#
 
 # Hot corners

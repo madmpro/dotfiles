@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rasterisk -x 'sip show peers'|grep OK|sort|awk '{print $2,$1}'|sort > 1;arp -n|grep -v Address|awk '{print $1,$3}'|sort > 2;join 1 2

@@ -8,6 +8,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 
 print_in_purple "\n   Social Media & Communication\n\n"
 
+brew_install "3CXPhone" "3cxphone" "caskroom/cask" "cask"
+
 brew_install "WhatsApp" "whatsapp" "caskroom/cask" "cask"
 
 brew_install "Skype" "skype" "caskroom/cask" "cask"

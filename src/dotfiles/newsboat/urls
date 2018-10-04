@@ -3,7 +3,6 @@
 #------------------------------
 # query:<name of feed>:<filter expression> [<tag> ...]
 # --- Everything Unread
-"query: Unread Articles:unread = \"yes\""
 "query:→ Unread Articles:unread = \"yes\""
 "query:→ Bookmarked Articles:flags # \"s\"" "Starred"
 # Tags
@@ -21,9 +20,12 @@
 "query:→ Network:tags # \"Network\"" "Network"
 "query:→ OpenSource:tags # \"OpenSource\"" "OpenSource"
 "query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
+"query:→ PowerShell:tags # \"PowerShell\"" "PowerShell"
 "query:→ SystemCenter:tags # \"SystemCenter\"" "SystemCenter"
+"query:→ Scripts:tags # \"Scripts\"" "Scripts"
 "query:→ Software:tags # \"Software\"" "Software"
 "query:→ Tech:tags # \"Tech\"" "Tech"
+"query:→ Virtualization:tags # \"Virtualization\"" "Virtualization"
 "query:→ YouTube:tags # \"YouTube\"" "YouTube"
 
 "query:Unread Articles (Favourite):unread = \"yes\" and tags # \"Favourite\""
@@ -33,54 +35,51 @@
 #------------------------------
 # This is for password example:
 # http://username:password@hostname.domain.tld/feed.rss
-------------------------------
-CIO
-------------------------------
+______________________________
+CIO:
 https://www.cio.ru/rss "CIO"
-------------------------------
-Infrastructure
-------------------------------
-------------------------------
-IT
-------------------------------
-https://habr.com/rss/interesting/ "IT" "Tech"
-https://www.itworld.com/index.rss "IT"
-https://www.oreilly.com/ideas/feed.atom "IT"
-------------------------------
-Linux
-------------------------------
+______________________________
+Infrastructure:
+______________________________
+IT:
+https://habr.com/rss/interesting/ "~Habr" "IT" "Tech"
+https://www.itworld.com/index.rss "~ITWorld" "IT"
+______________________________
+Linux:
 https://www.linux.org.ru/section-rss.jsp?section=1 "~Linux.org.ru" "Linux" "OpenSource"
 https://www.opennet.ru/opennews/opennews_all.rss "~OpenNET" "Linux" "OpenSource"
 http://blog.sanctum.geek.nz/feed/ "Unix"
 https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
-http://feeds.feedburner.com/LinuxByExamples "Linux"
-------------------------------
-MacOS
-------------------------------
-https://www.macworld.com/index.rss "MacOS"
-------------------------------
-Microsoft
-------------------------------
-http://www.scconfigmgr.com/feed/ "Microsoft" "SystemCenter"
-------------------------------
-Network
-------------------------------
-https://www.networkworld.com/index.rss "Network"
-https://linkmeup.ru/rss "Network"
-------------------------------
-OSP.ru
-------------------------------
+http://feeds.feedburner.com/LinuxByExamples "~LinuxByExamples" "Linux"
+______________________________
+MacOS:
+https://www.macworld.com/index.rss "~MacWorld" "MacOS"
+______________________________
+Microsoft:
+http://www.scconfigmgr.com/feed/ "~SCConfigMgr.com" "SystemCenter"
+
+https://blogs.technet.microsoft.com/heyscriptingguy/feed/ "~TechNet: PowerShell" "PowerShell"
+https://blogs.technet.microsoft.com/feed/ "~TechNet: Tech" "Tech"
+https://gallery.technet.microsoft.com/scriptcenter/site/feeds/searchRss?f%5B0%5D.Type=SearchDefaultLocale&f%5B0%5D.Value=True&sortBy=Popularity "~TechNet: Scripts" "Scripts"
+
+https://feeds.feedburner.com/windowsnotesru "~WindowsNotes.ru" "Windows"
+
+______________________________
+Network:
+https://www.networkworld.com/index.rss "~NetworkWorld" "Network"
+https://linkmeup.ru/rss "~LinkMeUp" "Network"
+______________________________
+OSP.ru:
 https://www.osp.ru/rss/Software.rss "~OSP.ru: Software"
 https://www.osp.ru/rss/Networking.rss "~OSP.ru: Network" "Network"
 https://www.osp.ru/rss/Security.rss "~OSP.ru: Security" "Security"
 https://www.osp.ru/rss/AllPC.rss "~OSP.ru: PC" "PC"
 https://www.osp.ru/rss/DataCenter.rss "~OSPru: Infrastructure" "Infrastructure"
-------------------------------
-PC
-------------------------------
-------------------------------
-Reddit
-------------------------------
+______________________________
+PC:
+
+______________________________
+Reddit:
 http://www.reddit.com/r/linux/.rss "~Rreddit: Linux" "Linux"
 http://www.reddit.com/r/commandline/.rss "~Rreddit: Commandline" "Linux"
 http://www.reddit.com/r/LinuxActionShow/.rss "~Rreddit: LinuxActionShow" "Linux"
@@ -97,15 +96,12 @@ http://www.reddit.com/r/usefulscripts/.rss "~Rreddit: UsefulScripts" "Linux" "Sc
 http://www.reddit.com/r/opensource/.rss "~Rreddit: OpenSource" "OpenSource"
 http://www.reddit.com/r/coolgithubprojects/.rss "~Rreddit: CoolGithubProjects" "OpenSource"
 http://www.reddit.com/r/selfhosted/.rss "~Rreddit: SelfHosted" "OpenSource"
-
-------------------------------
-Software
-------------------------------
-https://feeds.feedburner.com/pfc "Software"
-
-------------------------------
+https://www.reddit.com/r/PowerShell/.rss "~Rreddit: PowerShell" "PowerShell"
+______________________________
+Software:
+https://feeds.feedburner.com/pfc "~PortableFreeware" "Software" "Freeware"
+______________________________
 TECH
-------------------------------
 https://techcrunch.com/feed/ "~TechCrunch" "Tech"
 https://www.engadget.com/rss.xml "~Engadget" "Tech"
 https://hackaday.com/blog/feed/ "~Hackaday" "Tech"
@@ -113,20 +109,23 @@ https://www.raspberrypi.org/magpi/feed/ "~The MagiPi" "Tech"
 http://feeds.feedburner.com/oreilly/radar/atom "~O'Reilly" "Tech"
 https://www.oreilly.com/ideas/feed.atom "~O'Reilly: Ideas" "Tech"
 https://www.pcworld.com/index.rss "~PCWorld" "Tech"
-https://codeby.net/forum/forums/-/index.rss "Tech"
-------------------------------
-Security
-------------------------------
-https://helpugroup.ru/feed/ "Security"
+https://codeby.net/forum/forums/-/index.rss "~Codeby: Forum" "Security" "Tech"
+https://4sysops.com/feed/ "~4SysOps" "Tech"
+http://techgenix.com/feed/ "~TechGenix" "Tech"
+______________________________
+Security:
+https://helpugroup.ru/feed/ "~HelpU Group" "Security"
 https://www.hackerone.com/blog.rss "~HackerOne" "Tech" "Security"
 http://feeds.feedburner.com/GoogleOnlineSecurityBlog "~Google Security" "Tech" "Security"
-------------------------------
-Xakep.ru
-------------------------------
+______________________________
+Virtualization:
+https://feeds.feedburner.com/Vmguru "~VMGuru" "Virtualization"
+______________________________
+Xakep.ru:
 https://xakep.ru/tag/windows/feed/ "~Xakep.ru: Windows" "Windows"
 https://xakep.ru/tag/linux/feed/ "~Xakep.ru: Linux" "Linux"
 https://xakep.ru/tag/android/feed/ "~Xakep.ru: Android" "Android"
 https://xakep.ru/tag/zhelezo/feed/ "~Xakep.ru: Hardware" "Hardware"
 https://xakep.ru/tag/iot/feed/ "~Xakep.ru: IoT" "IoT"
-https://xakep.ru/tag/blockchain/ "~Xakep.ru: Blockchain" "Blockchain"
-https://xakep.ru/tag/messengers/ "~Xakep.ru: Messengers" "Messengers"
+https://xakep.ru/tag/blockchain/feed/ "~Xakep.ru: Blockchain" "Blockchain"
+https://xakep.ru/tag/messengers/feed/ "~Xakep.ru: Messengers" "Messengers"
