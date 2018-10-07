@@ -21,11 +21,11 @@ export HISTFILESIZE=10000
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
 mkdir -p ${HOME}/.history/$(date -u +%Y/%m)
-export HISTFILE="${HOME}/.history/$(date -u +%Y/%m/%d.%H.%M.%S)_${HOSTNAME_SHORT}_$$"
+export HISTFILE="${HOME}/.history/$(date -u +%Y/%m/%d-%H.%M.%S)_${HOSTNAME_SHORT}_$$"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Don't add certain commands to the history file.
-export HISTIGNORE="&:[bf]g:c:clear:clr:exit:history:l:ll:ls:lsa:q:pwd:* --help"
+export HISTIGNORE="&:[bf]g:c:clear:clr:exit:history:l:ll:ls:lsa:q:pwd:bash:* --help"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Increase the maximum number of commands recorded
 # in the command history (default value is 500).

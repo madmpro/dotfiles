@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo route -n add -net 10.10.4.0/24  10.10.1.10 -ifscope ppp0
+sudo route -n add -net 10.10.24.0/24  10.10.1.10 -ifscope ppp0
