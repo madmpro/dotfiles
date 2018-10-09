@@ -7,9 +7,16 @@ export BASH_DIR="$HOME/.bash"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Projects DIR
 export PROJECTS="$HOME/Projects"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Default Editor
+
 # Make `vim` the default editor.
 export EDITOR="vim"
+
+# TextMate as default editor
+#[[ -f "/usr/local/bin/mate" ]] && export EDITOR="/usr/local/bin/mate -w"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Ignore commands that start with spaces and duplicates.
 export HISTCONTROL=ignoreboth
@@ -19,7 +26,7 @@ export HISTCONTROL=ignoreboth
 export HISTFILESIZE=10000
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#
+# Bash History
 mkdir -p ${HOME}/.history/$(date -u +%Y/%m)
 export HISTFILE="${HOME}/.history/$(date -u +%Y/%m/%d-%H.%M.%S)_${HOSTNAME_SHORT}_$$"
 

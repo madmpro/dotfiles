@@ -73,6 +73,7 @@ http://blog.sanctum.geek.nz/feed/ "Unix"
 https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
 http://feeds.feedburner.com/LinuxByExamples "~LinuxByExamples" "Linux"
 https://opensource.com/feed "~OpenSource" "OpenSource"
+https://www.cyberciti.biz/atom/atom.xml "~nixCraft" "OpenSource"
 ______________________________
 OSP.ru:
 https://www.osp.ru/rss/Software.rss "~OSP.ru: Software"
