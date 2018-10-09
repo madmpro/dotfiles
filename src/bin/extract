@@ -51,6 +51,8 @@ function extract {
           *.cpio)     cpio -id <    "$fullpath" ;;
           *.cba|*.ace)
                       unace x       "$fullpath" ;;
+          *.ipa)      unzip         "$fullpath" ;;
+          *.pax)      pax -r <      "$fullpath" ;;
 
           *)
                       echo "extract: '$n' - unknown archive method"

@@ -18,7 +18,7 @@ VSCODE_CONFIGS=(
 
 for file in ${VSCODE_CONFIGS[@]}; do
   ln -sf \
-    "$HOME/Projects/dotfiles/src/Visual Studio Code/User/$file.json" \
+    "$HOME/Projects/dotfiles/src/dotfiles/Visual Studio Code/User/$file.json" \
     "$HOME/Library/Application Support/Code/User"
 done
 

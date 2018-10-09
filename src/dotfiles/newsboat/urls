@@ -35,6 +35,10 @@
 #------------------------------
 # This is for password example:
 # http://username:password@hostname.domain.tld/feed.rss
+
+______________________________
+Blogs:
+https://www.romanzolotarev.com/rss.xml "Blogs"
 ______________________________
 CIO:
 https://www.cio.ru/rss "CIO"
@@ -44,13 +48,6 @@ ______________________________
 IT:
 https://habr.com/rss/interesting/ "~Habr" "IT" "Tech"
 https://www.itworld.com/index.rss "~ITWorld" "IT"
-______________________________
-Linux:
-https://www.linux.org.ru/section-rss.jsp?section=1 "~Linux.org.ru" "Linux" "OpenSource"
-https://www.opennet.ru/opennews/opennews_all.rss "~OpenNET" "Linux" "OpenSource"
-http://blog.sanctum.geek.nz/feed/ "Unix"
-https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
-http://feeds.feedburner.com/LinuxByExamples "~LinuxByExamples" "Linux"
 ______________________________
 MacOS:
 https://www.macworld.com/index.rss "~MacWorld" "MacOS"
@@ -68,6 +65,14 @@ ______________________________
 Network:
 https://www.networkworld.com/index.rss "~NetworkWorld" "Network"
 https://linkmeup.ru/rss "~LinkMeUp" "Network"
+______________________________
+OpenSource:
+https://www.linux.org.ru/section-rss.jsp?section=1 "~Linux.org.ru" "Linux" "OpenSource"
+https://www.opennet.ru/opennews/opennews_all.rss "~OpenNET" "Linux" "OpenSource"
+http://blog.sanctum.geek.nz/feed/ "Unix"
+https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
+http://feeds.feedburner.com/LinuxByExamples "~LinuxByExamples" "Linux"
+https://opensource.com/feed "~OpenSource" "OpenSource"
 ______________________________
 OSP.ru:
 https://www.osp.ru/rss/Software.rss "~OSP.ru: Software"
