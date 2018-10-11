@@ -11,7 +11,8 @@ print_in_purple "\n   Editors & IDE\n\n"
 brew_install "Atom" "atom" "caskroom/cask" "cask"
 
 execute \
-    "apm install 'markdown-writer' && \
+    "apm install 'atom-beautify' && \
+     apm install 'markdown-writer' && \
      apm install 'markdown-preview-plus' && \
      apm install 'markdown-pdf' && \
      apm install 'language-powershell' && \

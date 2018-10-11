@@ -1,9 +1,6 @@
 #!/bin/bash
-
 echo "Loading profile..."
-
 # bash will try to source .bash_profile first, but if that doesn't exist, it will source .profile
-
 # if running bash
 if [ "${BASH-no}" != "no" ]; then
 		# include .bashrc if it exists
@@ -11,46 +8,35 @@ if [ "${BASH-no}" != "no" ]; then
 				[ -r $HOME/.bashrc ] && . $HOME/.bashrc
 		fi
 fi
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Check /etc/paths before unmask
 # include bin in PATH
 #[[ -d "/bin" ]] && PATH="/bin:$PATH"
 #[[ -d "/usr/bin" ]] && PATH="/usr/bin:$PATH"
-
 # include sbin in PATH
 #[[ -d "/sbin" ]] &&  PATH="/sbin:$PATH"
 #[[ -d "/usr/sbin" ]] &&  PATH="/usr/sbin:$PATH"
-
 # Brewed path
 #[[ -d "/usr/local/bin" ]] &&  PATH="/usr/local/bin:$PATH"
 #[[ -d "/usr/local/sbin" ]] && PATH="/usr/local/sbin:$PATH"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 # set PATH so it includes user's private bin if it exists
 [[ -d "$HOME/bin" ]] && PATH="$HOME/bin:$PATH"
-
 # include opt in PATH
 [[ -d "/usr/local/opt" ]] &&  PATH="/usr/local/opt:$PATH"
-
 # Brewed LaTEX path
 [[ -d "/usr/texbin" ]] &&  PATH="/usr/texbin:$PATH"
-
 ##### MAC ONLY #####################################################
 if [ "$(uname)" == "Darwin" ]; then
-
 	# Brewed Ruby path
 	[[ -d "/usr/local/opt/ruby/bin" ]] &&  PATH="/usr/local/opt/ruby/bin:$PATH"
 	[[ -d "$HOME/Library/Python/2.7/bin" ]] && PATH="$HOME/Library/Python/2.7/bin:$PATH"
-
   [[ -d "/usr/local/opt/sqlite/bin" ]] && PATH="/usr/local/opt/sqlite/bin:$PATH"
 	[[ -d "$HOME/perl5/bin" ]] && PATH="$HOME/perl5/bin:$PATH"
-
 	#eval "$(perl -I $HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 	# The order of the PATH is important, by putting first the
 	# /usr/local/opt/python/libexec/bin will help to give preference to the brew install (python3)
 	# than the one is in your system located in /usr/bin/python
 	[[ -d "/usr/local/opt/python/libexec/bin" ]] && PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
 fi
 ##### MAC ONLY #####################################################
