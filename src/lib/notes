@@ -38,3 +38,6 @@ ls -R /Volumes/Data | grep "*Box*\.efi$"
 
 find /Volumes/Data -type f -iname "*tel*.xlsx"
 locate "/Volumes/Data/*/*.xlsx"
+
+# Copy directory to remote host
+scp -r user@your.server.example.com:/path/to/foo /home/user/Desktop/

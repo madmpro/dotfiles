@@ -1,0 +1,4 @@
+# Newsboat Bookmarks
+
+Title | URL
+-|-|-

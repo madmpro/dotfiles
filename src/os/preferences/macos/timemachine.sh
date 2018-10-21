@@ -19,5 +19,8 @@ execute "defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool 
 execute "sudo defaults write com.apple.TimeMachine MaxSize -integer 524288" \
     "Limit Time Machine total backup size to 500 GB"
 
-execute "sudo tmutil addexclusion $HOME/Downloads" \
+execute "sudo tmutil addexclusion $HOME/Downloads && \
+         sudo tmutil addexclusion $HOME/Library/Application\ Support/Steam/steamapps/ && \
+         sudo tmutil addexclusion $HOME/Movies && \
+         sudo tmutil addexclusion $HOME/Dropbox" \
     "Add common exclusions"

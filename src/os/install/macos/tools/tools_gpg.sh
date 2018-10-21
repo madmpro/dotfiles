@@ -11,3 +11,5 @@ print_in_purple "\n   GPG\n\n"
 brew_install "GPG" "gpg"
 brew_install "GPG Agent" "gpg-agent"
 brew_install "Pinentry" "pinentry-mac"
+
+brew_install "GPG Suite" "gpg-suite" "caskroom/cask" "cask"

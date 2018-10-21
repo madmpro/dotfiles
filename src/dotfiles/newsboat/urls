@@ -48,6 +48,7 @@ ______________________________
 IT:
 https://habr.com/rss/interesting/ "~Habr" "IT" "Tech"
 https://www.itworld.com/index.rss "~ITWorld" "IT"
+https://sid-500.com/feed/ "~SID-500" "IT" "Tech"
 ______________________________
 MacOS:
 https://www.macworld.com/index.rss "~MacWorld" "MacOS"
@@ -74,6 +75,7 @@ https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
 http://feeds.feedburner.com/LinuxByExamples "~LinuxByExamples" "Linux"
 https://opensource.com/feed "~OpenSource" "OpenSource"
 https://www.cyberciti.biz/atom/atom.xml "~nixCraft" "OpenSource"
+http://www.linux-magazine.com/rss/feed/lmi_news "~Linux Pro Magazine" "Linux"
 ______________________________
 OSP.ru:
 https://www.osp.ru/rss/Software.rss "~OSP.ru: Software"

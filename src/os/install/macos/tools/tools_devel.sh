@@ -35,6 +35,7 @@ declare -a FORMULAS=(
     "numpy"
     "openssl"
     "perl"
+    "cpanm"
     "plenv"
     "perl-build"
     "pkg-config"

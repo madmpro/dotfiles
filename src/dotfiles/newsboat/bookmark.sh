@@ -8,10 +8,10 @@ else
 fi
 
 url=$(echo "${url}" | perl -p -e 's/(\?|\&)?utm_[a-z]+=[^\&]+//g;' -e 's/(#|\&)?utm_[a-z]+=[^\&]+//g;')
+
+baseurl=$(echo "${url}" | awk -F[/:] '{print $4}')
 title="$2"
 description="$3"
 feedtitle="$4"
 
-#grep -q "${url}\t${title}\t${description}" $HOME/.newsboat/bookmarks.txt || echo -e "${url}\t${title}\t${description}" >> $HOME/.newsboat/bookmarks.txt
-
-grep -q "${title}\t${description}\t${url}" $HOME/.newsboat/bookmarks.txt || echo -e "${title}\t${description}\t${url}" >> $HOME/.newsboat/bookmarks.txt
+grep -Fxq "${title} | [${baseurl}](${url})" $HOME/.newsboat/bookmarks.md || echo -e "${title} | [${baseurl}](${url})" >> $HOME/.newsboat/bookmarks.md

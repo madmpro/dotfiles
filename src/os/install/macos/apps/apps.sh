@@ -21,6 +21,5 @@ print_in_purple "\n   Desktop Apps\n"
 ./apps/app_office.sh
 ./apps/app_paragon.sh
 ./apps/app_tools.sh
-./apps/app_tor.sh
 ./apps/app_virtual.sh
 ./apps/apps_wine.sh

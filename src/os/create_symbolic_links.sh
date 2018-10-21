@@ -89,6 +89,7 @@ create_symlinks() {
         fi
     done
 
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # link bin
     print_in_purple "\n • Installing user binaries...\n\n"
@@ -100,6 +101,7 @@ create_symlinks() {
     [[ ! -d "$targetFolder" ]] && mkdir $targetFolder
 
     for i in $FILES_TO_SYMLINK ; do
+      # do not link .md files
       if [[ "$i" = *.md ]]; then
         continue
       fi
@@ -136,6 +138,13 @@ create_symlinks() {
       fi
     done
 
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Newsboat bookmarks
+
+    if [ ! -e "$HOME/.newsboat/bookmarks.md" ]; then
+      cp "$HOME/.newsboat/bookmarks.template.md" "$HOME/.newsbot/bookmarks.md" 
+    fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

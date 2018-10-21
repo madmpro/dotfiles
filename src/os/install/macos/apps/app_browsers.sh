@@ -41,8 +41,9 @@ brew_install "Flash" "flash-npapi" "caskroom/cask" "cask"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 printf "\n"
+brew_install "Tor Proxy" "tor"
 
-brew_install "TorBrowser" "torbrowser" "caskroom/cask" "cask"
+brew_install "Tor Browser" "torbrowser" "caskroom/cask" "cask"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

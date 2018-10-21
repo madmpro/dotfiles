@@ -68,9 +68,6 @@ execute "defaults write NSGlobalDomain AppleFontSmoothing -int 2" \
 execute "defaults write -g AppleFontSmoothing -int 2" \
     "Enable subpixel font rendering on non-Apple LCDs"
 
-execute "defaults write -g AppleShowScrollBars -string 'Always'" \
-    "Always show scrollbars"
-
 execute "defaults write -g NSDisableAutomaticTermination -bool true" \
     "Disable automatic termination of inactive apps"
 
@@ -131,7 +128,7 @@ execute "defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false" \
     "Disable Resume system-wide"
 
 execute "defaults write NSGlobalDomain AppleShowScrollBars -string 'Automatic'" \
-    "Automatically show scrollbars based on input"
+    "Always show scrollbars"
 
 execute "sudo pmset -a standbydelay 86400" \
     "Deep sleep after 24 hours instead of the default 70 minutes"

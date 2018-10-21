@@ -1,4 +1,0 @@
-Вышел Zabbix 4.0		https://www.linux.org.ru/news/opensource/14508212
-Whats New in Zabbix 4.0		https://www.reddit.com/r/linux/comments/9kphzt/whats_new_in_zabbix_40/
-Как скачать все сессии прошедшего VMware VMworld 2018 через Torrent или по прямым ссылкам.		https://www.vmgu.ru/news/vmware-vmworld-2018-all-sessions-download
-Полный список всех лабораторных работ (Hands-On Labs) с прошедшей конференции VMware VMworld 2018.		https://www.vmgu.ru/news/vmware-vmworld-2018-all-hands-on-labs

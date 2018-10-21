@@ -14,7 +14,7 @@ brew_install "WhatsApp" "whatsapp" "caskroom/cask" "cask"
 
 brew_install "Skype" "skype" "caskroom/cask" "cask"
 
-brew_install "Skype for Bussiness" "skype-for-business" "caskroom/cask" "cask"
+#brew_install "Skype for Bussiness" "skype-for-business" "caskroom/cask" "cask"
 
 brew_install "Viber" "viber" "caskroom/cask" "cask"
 

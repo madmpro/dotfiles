@@ -25,3 +25,5 @@ brew_install "Kdiff3" "kdiff3" "caskroom/cask" "cask"
 brew_install "now" "now" "caskroom/cask" "cask" # Native application for https://zeit.co/now
 
 brew_install "Radare2" "radare2"
+
+brew_install "Gitbook Editor" "gitbook-editor" "caskroom/cask" "cask"
