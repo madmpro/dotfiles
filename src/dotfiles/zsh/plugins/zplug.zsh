@@ -1,7 +1,7 @@
 # zplug
 
-export ZPLUG_HOME="$HOME/.zsh/zplug"
-export ZPLUG_LOADFILE="$HOME/.zsh/packages.zsh"
+export ZPLUG_HOME="$HOME/.zsh/plugins/zplug"
+export ZPLUG_LOADFILE="$HOME/.zsh/plugins/packages.zsh"
 
 # Install zplug if it's doesn't exist
 if [ ! -d $ZPLUG_HOME ]; then

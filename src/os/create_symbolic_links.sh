@@ -143,7 +143,7 @@ create_symlinks() {
     # Newsboat bookmarks
 
     if [ ! -e "$HOME/.newsboat/bookmarks.md" ]; then
-      cp "$HOME/.newsboat/bookmarks.template.md" "$HOME/.newsbot/bookmarks.md" 
+      cp "$HOME/.newsboat/bookmarks.template.md" "$HOME/.newsbot/bookmarks.md"
     fi
 }
 
