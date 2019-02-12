@@ -47,7 +47,10 @@ execute "defaults write com.googlecode.iterm2 PinchToChangeFontSizeDisabled -boo
     "Disable pinch to change font size in iTerm2"
 
 execute "defaults write com.googlecode.iterm2 PromptOnQuit -bool false" \
-    "Do not display the iTerm2 quitting dialog box"
+    "Do not display the iTerm2 quitting dialog box when multiple opened tabs"
+
+execute "defaults write com.googlecode.iterm2 OnlyWhenMoreTabs -bool false" \
+    "Do not quit iTerm2 when all windows have closed"
 
 execute "defaults write com.googlecode.iterm2 QuitWhenAllWindowsClosed -bool false" \
     "Do not quit iTerm2 when all windows have closed"

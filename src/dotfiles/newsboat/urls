@@ -1,3 +1,4 @@
+
 #------------------------------
 # Query Feeds
 #------------------------------
@@ -19,6 +20,7 @@
 "query:→ Microsoft:tags # \"Microsoft\"" "Microsoft"
 "query:→ Network:tags # \"Network\"" "Network"
 "query:→ OpenSource:tags # \"OpenSource\"" "OpenSource"
+"query:→ Photo:tags # \"Photo\"" "Photo"
 "query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
 "query:→ PowerShell:tags # \"PowerShell\"" "PowerShell"
 "query:→ SystemCenter:tags # \"SystemCenter\"" "SystemCenter"
@@ -39,16 +41,20 @@
 ______________________________
 Blogs:
 https://www.romanzolotarev.com/rss.xml "Blogs"
+https://estekhin.blogspot.com/feeds/posts/default "Blogs"
 ______________________________
 CIO:
 https://www.cio.ru/rss "CIO"
 ______________________________
-Infrastructure:
+Industry:
+https://www.iemag.ru/rss/ "Industry"
+https://jet.su/about/news/rss/ "Industry"
 ______________________________
 IT:
 https://habr.com/rss/interesting/ "~Habr" "IT" "Tech"
 https://www.itworld.com/index.rss "~ITWorld" "IT"
 https://sid-500.com/feed/ "~SID-500" "IT" "Tech"
+https://www.itweek.ru/rss/ "~itWeek" "IT" "Tech"
 ______________________________
 MacOS:
 https://www.macworld.com/index.rss "~MacWorld" "MacOS"
@@ -78,11 +84,16 @@ https://www.cyberciti.biz/atom/atom.xml "~nixCraft" "OpenSource"
 http://www.linux-magazine.com/rss/feed/lmi_news "~Linux Pro Magazine" "Linux"
 ______________________________
 OSP.ru:
+https://www.osp.ru/rss/ "~OSPru"
 https://www.osp.ru/rss/Software.rss "~OSP.ru: Software"
 https://www.osp.ru/rss/Networking.rss "~OSP.ru: Network" "Network"
 https://www.osp.ru/rss/Security.rss "~OSP.ru: Security" "Security"
 https://www.osp.ru/rss/AllPC.rss "~OSP.ru: PC" "PC"
 https://www.osp.ru/rss/DataCenter.rss "~OSPru: Infrastructure" "Infrastructure"
+______________________________
+Photo:
+http://feeds.feedburner.com/kenjizblog "~evtifeev.com" "Photo"
+http://radojuva.com/feed/ "~radojuva.com" "Photo"
 ______________________________
 PC:
 
@@ -120,6 +131,7 @@ https://www.pcworld.com/index.rss "~PCWorld" "Tech"
 https://codeby.net/forum/forums/-/index.rss "~Codeby: Forum" "Security" "Tech"
 https://4sysops.com/feed/ "~4SysOps" "Tech"
 http://techgenix.com/feed/ "~TechGenix" "Tech"
+https://ccm.net/rss/ "~CCM" "Tech"
 ______________________________
 Security:
 https://helpugroup.ru/feed/ "~HelpU Group" "Security"

@@ -35,6 +35,11 @@ main() {
     install_npm_package "git-commander" "git-commander"
     install_npm_package "create-dmg" "create-dmg"
     install_npm_package "now" "now" # The command-line interface for Now https://zeit.co/now
+    install_npm_package "nativefier" "nativefier" # Make any web page a desktop application https://github.com/jiahaog/nativefier
+
+    install_npm_package "css-select" "css-select"
+    install_npm_package "css-what" "css-what"
+    install_npm_package "coffeescript" "coffeescript"
 
 }
 

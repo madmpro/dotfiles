@@ -85,8 +85,6 @@ main() {
     brew_install "Bash" "bash" \
         && change_default_bash
 
-    brew_install "Bash Completion 2" "bash-completion@2"
-
 }
 
 main

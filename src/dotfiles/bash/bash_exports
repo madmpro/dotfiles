@@ -8,68 +8,143 @@ export BASH_DIR="$HOME/.bash"
 # Projects DIR
 export PROJECTS="$HOME/Projects"
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Default Editor
+# ------------------------------------------------------------------------------
+# PAGER / EDITOR
+# ------------------------------------------------------------------------------
 
-# Make `vim` the default editor.
-export EDITOR="vim"
+# Default editor
+test -n "$(command -v vim)" && EDITOR=vim || EDITOR=nano
+export EDITOR
 
-# TextMate as default editor
-#[[ -f "/usr/local/bin/mate" ]] && export EDITOR="/usr/local/bin/mate -w"
+# Default pager ('less' is so much better than 'more'...)
+if test -n "$(command -v less)" ; then
+    PAGER="less -FirSwX"
+    MANPAGER="less -FiRswX"
+else
+    PAGER=more
+    MANPAGER="$PAGER"
+fi
+export PAGER MANPAGER
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Use custom `less` colors for `man` pages.
+export LESS_TERMCAP_md="$(tput bold 2> /dev/null; tput setaf 2 2> /dev/null)"
+export LESS_TERMCAP_me="$(tput sgr0 2> /dev/null)"
+
+# ------------------------------------------------------------------------------
+# BASH HISTORY
+# ------------------------------------------------------------------------------
+
 # Ignore commands that start with spaces and duplicates.
 export HISTCONTROL=ignoreboth
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # Increase the maximum number of lines of history
 # persisted in the history file (default value is 500).
 export HISTFILESIZE=10000
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Bash History
+# Bash History File
 mkdir -p ${HOME}/.history/$(date -u +%Y/%m)
-export HISTFILE="${HOME}/.history/$(date -u +%Y/%m/%d-%H.%M.%S)_${HOSTNAME_SHORT}_$$"
+export HISTFILE="${HOME}/.history/$(date -u +%Y/%m/%d-%H.%M.%S)_${HOSTNAME}_$$"
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Don't add certain commands to the history file.
 export HISTIGNORE="&:[bf]g:c:clear:clr:exit:history:l:ll:ls:lsa:q:pwd:bash:* --help"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # Increase the maximum number of commands recorded
 # in the command history (default value is 500).
 export HISTSIZE=10000
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Prefer US English and use UTF-8 encoding.
-export LANG="en_US"
-export LC_ALL="en_US.UTF-8"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Use custom `less` colors for `man` pages.
-export LESS_TERMCAP_md="$(tput bold 2> /dev/null; tput setaf 2 2> /dev/null)"
-export LESS_TERMCAP_me="$(tput sgr0 2> /dev/null)"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Don't clear the screen after quitting a `man` page.
-export MANPAGER="less -X"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # Increase the maximum number of lines of history persisted
 # in the `Node` REPL history file (default value is 1000).
 #
 # https://github.com/nodejs/node/blob/c948877688ff2b6a37f2c88724b656aae495c7b2/doc/api/repl.md#persistent-history
 export NODE_REPL_HISTORY_SIZE=10000
+
+# ------------------------------------------------------------------------------
+# LOCALES
+# ------------------------------------------------------------------------------
+
+# Prefer US English and use UTF-8 encoding.
+export LANG="en_US"
+export LC_ALL="en_US.UTF-8"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # Make new shells get the history lines from all previous
 # shells instead of the default "last window closed" history.
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Make Python use UTF-8 encoding for output to stdin/stdout/stderr.
 export PYTHONIOENCODING="UTF-8"
+
 # Solarized skin for Midnight Commander
 export MC_SKIN=$HOME/.config/mc/skins/solarized.ini
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-##### MAC ONLY #####################################################
-#if [ `uname` == "Darwin" ]; then
-
-#fi
-##### END MAC ONLY #####################################################
+# ------------------------------------------------------------------------------
+# LOCAL EXPORTS
+# ------------------------------------------------------------------------------
 
 # Include local exports that you don't want exposed online
 [[ -f "$HOME/.exports.local" ]] && source "$HOME/.exports.local"
+
+# I hate this ring
+#set bell-style visible
+
+# ------------------------------------------------------------------------------
+# PATH
+# ------------------------------------------------------------------------------
+
+# set PATH so it includes user's private bin if it exists
+[[ -d "$HOME/bin" ]] && export PATH="$HOME/bin:$PATH"
+# include opt in PATH
+[[ -d "/usr/local/opt" ]] &&  export PATH="/usr/local/opt:$PATH"
+# Brewed LaTEX path
+[[ -d "/usr/texbin" ]] &&  export PATH="/usr/texbin:$PATH"
+
+# Check /etc/paths before unmask
+# include bin in PATH
+#[[ -d "/bin" ]] && PATH="/bin:$PATH"
+#[[ -d "/usr/bin" ]] && PATH="/usr/bin:$PATH"
+# include sbin in PATH
+#[[ -d "/sbin" ]] &&  PATH="/sbin:$PATH"
+#[[ -d "/usr/sbin" ]] &&  PATH="/usr/sbin:$PATH"
+# Brewed path
+#[[ -d "/usr/local/bin" ]] &&  PATH="/usr/local/bin:$PATH"
+
+# ------------------------------------------------------------------------------
+# MACOS X / DARWIN SPECIFIC
+# ------------------------------------------------------------------------------
+if [ `uname` == "Darwin" ]; then
+
+  # Export Brewed paths
+  [[ -d "/usr/local/sbin" ]] && export PATH="/usr/local/sbin:$PATH"
+
+  # Brewed Ruby path
+  [[ -d "/usr/local/opt/ruby/bin" ]] &&  PATH="/usr/local/opt/ruby/bin:$PATH"
+  [[ -d "/usr/local/opt/python@2/bin" ]] && PATH="/usr/local/opt/python@2/bin:$PATH"  
+  [[ -d "$HOME/Library/Python/2.7/bin" ]] && PATH="$HOME/Library/Python/2.7/bin:$PATH"
+
+  [[ -d "/usr/local/opt/sqlite/bin" ]] && PATH="/usr/local/opt/sqlite/bin:$PATH"
+  [[ -d "$HOME/perl5/bin" ]] && PATH="$HOME/perl5/bin:$PATH"
+  #eval "$(perl -I $HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+  # The order of the PATH is important, by putting first the
+  # /usr/local/opt/python/libexec/bin will help to give preference to the brew install (python3)
+  # than the one is in your system located in /usr/bin/python
+  [[ -d "/usr/local/opt/python/libexec/bin" ]] && PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+  # llvm
+  # To use the bundled libc++ please add the following LDFLAGS:
+  #  LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+
+  #This formula is keg-only, which means it was not symlinked into /usr/local,
+  #because macOS already provides this software and installing another version in
+  #parallel can cause all kinds of trouble.
+
+  [[ -d "/usr/local/opt/llvm/bin" ]] &&export PATH="/usr/local/opt/llvm/bin:$PATH"
+
+  #For compilers to find this software you may need to set:
+  #    LDFLAGS:  -L/usr/local/opt/llvm/lib
+  #    CPPFLAGS: -I/usr/local/opt/llvm/include
+
+  # go
+  [[ -d "/usr/local/opt/go/libexec/bin" ]] &&export PATH="$PATH:/usr/local/opt/go/libexec/bin"
+
+fi

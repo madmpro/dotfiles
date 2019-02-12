@@ -1,0 +1,9 @@
+### Dotfiles Begin ###
+
+Host *
+ IgnoreUnknown UseKeychain
+ AddKeysToAgent yes
+ UseKeychain yes
+ IdentityFile ~/.ssh/id_rsa
+
+### Dotfiles End ###

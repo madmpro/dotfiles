@@ -1,18 +1,17 @@
 #!/bin/bash
 
+# ------------------------------------------------------------------------------
 # Bash options.
+# ------------------------------------------------------------------------------
 # https://www.gnu.org/software/bash/manual/bashref.html#The-Shopt-Builtin
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-shopt -s autocd # Automatically prepend `cd` to directory names.
-shopt -s cdspell # Autocorrect typos in path names when using the `cd` command.
-shopt -s checkwinsize # Check the window size after each command and, if necessary, update the values of `LINES` and `COLUMNS`.
-shopt -s cmdhist # Save all lines of a multiple-line command in the same history entry.
-shopt -s dotglob # Include filenames beginning with a "." in the filename expansion.
-shopt -s extglob # Use extended pattern matching features.
-shopt -s histappend # Append to the history file rather then overwriting it.
-shopt -s no_empty_cmd_completion # avoid completion on an empty line.
-shopt -s nocaseglob # Match filenames in a case-insensitive fashion when performing filename expansion.
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+shopt -s autocd                   >/dev/null 2>&1 # Automatically prepend `cd` to directory names.
+shopt -s cdspell                  >/dev/null 2>&1 # Autocorrect typos in path names when using the `cd` command.
+shopt -s checkwinsize             >/dev/null 2>&1 # Check the window size after each command and, if necessary, update the values of `LINES` and `COLUMNS`.
+shopt -s cmdhist                  >/dev/null 2>&1 # Save all lines of a multiple-line command in the same history entry.
+shopt -s dotglob                  >/dev/null 2>&1 # Include filenames beginning with a "." in the filename expansion.
+shopt -s extglob                  >/dev/null 2>&1 # Use extended pattern matching features.
+shopt -s histappend               >/dev/null 2>&1 # Append to the history file rather then overwriting it.
+shopt -s hostcomplete             >/dev/null 2>&1  # perform hostname completion
+shopt -s no_empty_cmd_completion  >/dev/null 2>&1 # avoid completion on an empty line.
+shopt -s nocaseglob               >/dev/null 2>&1 # Match filenames in a case-insensitive fashion when performing filename expansion.

@@ -1,0 +1,10 @@
+*
+!.gitignore
+!powershell/*
+!mc/*
+!htop/*
+!youtube-viewer/*
+!wireshark/*
+!thefuck/*
+!tldr/*
+!brewfile/*

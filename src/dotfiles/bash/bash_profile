@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
+# Functions
+# ------------------------------------------------------------------------------
 
 get_os() {
 
@@ -30,7 +32,7 @@ source_bash_files() {
     declare -r -a FILES_TO_SOURCE=(
         "aliases/bash_aliases"
         "autocomplete/bash_autocomplete"
-        "autocomplete/git_autocomplete"
+#        "autocomplete/git_autocomplete"
         "bash_exports"
         "bash_includes"
         "bash_functions"
@@ -69,7 +71,9 @@ source_bash_files() {
 
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
+# Main
+# ------------------------------------------------------------------------------
 
 source_bash_files
 
@@ -77,7 +81,17 @@ source_bash_files
 # unset -f my_function
 unset -f source_bash_files
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
+
+# Brewfile manager for Homebrew at OS X.
+
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi
+
+# Homebrew Command Not Found
+# https://github.com/Homebrew/homebrew-command-not-found
+if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi
 
 # Clear system messages (system copyright notice, the date
 # and time of the last login, the message of the day, etc.).

@@ -1,4 +1,14 @@
 #!/bin/bash
+################################################################################
+#  .bashrc -- my personal Bourne-Again shell (aka bash) configuration
+#                   _               _
+#                  | |__   __ _ ___| |__  _ __ ___
+#                  | '_ \ / _` / __| '_ \| '__/ __|
+#               _  | |_) | (_| \__ \ | | | | | (__
+#              (_) |_.__/ \__,_|___/_| |_|_|  \___|
+#
+################################################################################
+# This file is NOT part of GNU bash
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return

@@ -30,15 +30,21 @@
 " ----------------------------------------------------------------------
 
 " Vim plugins
-so ~/.vim/plugins.vim
-so ~/.vim/plugin_settings.vim
-so ~/.vim/general_settings.vim
-so ~/.vim/platform_settings.vim
-so ~/.vim/helper_functions.vim
-so ~/.vim/automatic_commands.vim
-so ~/.vim/colors.vim
-so ~/.vim/key_mappings.vim
-so ~/.vim/status_line.vim
+so ~/.vim/init/plugins.vim
+so ~/.vim/init/plugsettings.vim
+so ~/.vim/init/options.vim
+so ~/.vim/init/platform.vim
+so ~/.vim/init/helpers.vim
+so ~/.vim/init/autocmd.vim
+so ~/.vim/init/colors.vim
+so ~/.vim/init/insertmodebg.vim
+so ~/.vim/init/keymappings.vim
+so ~/.vim/init/statusline.vim
+so ~/.vim/init/tabline.vim
+so ~/.vim/init/figitive.vim
+so ~/.vim/init/vue.vim
+
+" runtime! init/**.vim
 
 " ----------------------------------------------------------------------
 " | Local Settings                                                     |
@@ -51,7 +57,7 @@ so ~/.vim/status_line.vim
 "     by the local ones.
 
 if filereadable(glob("~/.vimrc.local"))
-    source ~/.vimrc.local
+    silent! source ~/.vimrc.local
 endif
 
 " ----------------------------------------------------------------------

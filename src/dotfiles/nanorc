@@ -1,10 +1,34 @@
 set mouse
 
-# Tabspaces
+## Convert typed tabs to spaces.
 set tabstospaces
+## Use this tab size instead of the default; it must be greater than 0.
 set tabsize 4
 set autoindent
 
+## The characters treated as closing brackets when justifying
+## paragraphs.  They cannot contain blank characters.  Only closing
+## punctuation, optionally followed by closing brackets, can end
+## sentences.
+##
+set brackets ""')>]}"
+
+## The opening and closing brackets that can be found by bracket
+## searches.  They cannot contain blank characters.  The former set must
+## come before the latter set, and both must be in the same order.
+##
+set matchbrackets "(<[{)>]}"
+
+## The characters treated as closing punctuation when justifying
+## paragraphs.  They cannot contain blank characters.  Only closing
+## punctuation, optionally followed by closing brackets, can end
+## sentences.
+##
+set punct "!.?"
+
+## Constantly display the cursor position in the statusbar.  Note that
+## this overrides "quickblank".
+set const
 
 # html
 include /usr/local/share/nano/html.nanorc
@@ -26,3 +50,9 @@ include /usr/local/share/nano/python.nanorc
 include /usr/local/share/nano/ruby.nanorc
 # Shell
 include /usr/local/share/nano/sh.nanorc
+
+# Others
+include ~/.nano/others.nanorc
+
+# Etc stuff
+include ~/.nano/etc-stuff.nanorc

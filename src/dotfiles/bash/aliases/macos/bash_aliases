@@ -164,10 +164,25 @@ if [ `uname` == "Darwin" ]; then
   # replace nano with brewed nano
   [[ -f "/usr/local/bin/nano" ]] && alias nano="/usr/local/bin/nano"
 
-  alias todo="todo.sh"
+  [[ -f "/usr/local/bin/todo.sh" ]] && alias todo="todo.sh"
 
   # export defaults to file /tmp/defaults
   alias deftmp="defaults read > /tmp/defaults"
+
+  alias rebuildkextcache="sudo kextcache -i /"
+  alias fixownershipandpermissions='echo "Fixing ownership and permissions..." && \
+        sudo chmod -R 755 /System/Library/Extensions/* && \
+        sudo chown -R root:wheel /System/Library/Extensions/* && \
+        sudo chown root:admin / && \
+        echo "Rebuilding kext cache..." && \
+        sudo kextcache -system-prelinked-kernel && \
+        sudo kextcache -system-caches'
+
+  # Delete old MacOS backups
+  alias deloldbkp="sudo tmutil delete $(tmutil machinedirectory)/$1"
+
+
+  [[ -f "$HOME/.atom/package.list" ]] && alias atompackagesinstall="apm install --packages-file $HOME/.atom/package.list"
 
 fi
 ##### MAC ONLY #####################################################

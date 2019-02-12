@@ -102,3 +102,8 @@ DEFAULT_USER=$(whoami)
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
+
+# Brewfile manager for Homebrew at OS X.
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi

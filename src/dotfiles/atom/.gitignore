@@ -1,0 +1,5 @@
+*
+config.cson
+!.gitignore
+!snippets.cson
+!init/*

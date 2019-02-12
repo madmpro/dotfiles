@@ -2,5 +2,5 @@
 
 # Clear console on exit to increase privacy
 
-[ "$SHLVL" == 1 ] \
-    && clear #&> /dev/null
+#[ "$SHLVL" == 1 ] \
+#    && clear #&> /dev/null

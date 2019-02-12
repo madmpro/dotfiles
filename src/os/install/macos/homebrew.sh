@@ -50,7 +50,7 @@ homebrew_taps () {
     tap "buo/cask-upgrade"  # A command line tool for upgrading every outdated app installed by Homebrew Cask https://github.com/buo/homebrew-cask-upgrade
     tap "beeftornado/rmtree" # Remove a formula and its unused dependencies
     tap "neomutt/homebrew-neomutt"
-    tap "tavianator/tap"
+    tap "tavianator/tap"    # bfs - A breadth-first version of the UNIX find command https://github.com/tavianator/bfs
     tap "universal-ctags/universal-ctags"
 }
 

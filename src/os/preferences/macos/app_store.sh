@@ -31,5 +31,8 @@ execute "defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1" \
 ## Allow the App Store to restart the computer for macOS updates
 # defaults write com.apple.commerce AutoUpdateRestartRequired -bool true
 
+# Disable Gatekeeper
+execute "sudo spctl --master-disable" \
+    "Allow Installation of Apps from Anywhere"
 
 app_kill "App Store"

@@ -1,11 +1,21 @@
-#!/bin/bash
+# -*- mode:sh; -*-
+################################################################################
+#  .inputrc -- my personal Readline configuration
+#             see https://github.com/Falkor/dotfiles
+#                 _                   _
+#                (_)_ __  _ __  _   _| |_ _ __ ___
+#                | | '_ \| '_ \| | | | __| '__/ __|
+#               _| | | | | |_) | |_| | |_| | | (__
+#              (_)_|_| |_| .__/ \__,_|\__|_|  \___|
+#                        |_|
+################################################################################
 
 # Readline library configuration options.
 # http://ss64.com/bash/syntax-inputrc.html
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
 # Autocompletion
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
 
 # Use case-insensitive TAB autocompletion. (cd ~/dow<Tab> => cd ~/Downloads/)
 set completion-ignore-case on
@@ -50,10 +60,9 @@ set skip-completed-text on
 # Try to stay at the same position when moving through the history
 set history-preserve-point on
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
 # Line editing
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# ------------------------------------------------------------------------------
 # Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
 set input-meta on
 set output-meta on
@@ -70,9 +79,9 @@ set convert-meta off
 "\e[3;3~": kill-word
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
 # Misc
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ------------------------------------------------------------------------------
 
 # Disable beeping and window flashing
 set bell-style none

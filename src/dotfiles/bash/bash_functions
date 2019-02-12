@@ -1,14 +1,18 @@
 #!/bin/bash
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 me=$HOME/.bash/bash_functions
+
+# ------------------------------------------------------------------------------
+# FUNCTIONS
+# ------------------------------------------------------------------------------
 
 function bash_functions() # Show availlable bash functions from this file
 {
     grep "^function" "$me" | awk '{$1=""; print}'
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function datauri() # Create data URI from a file.
 {
@@ -33,7 +37,7 @@ function datauri() # Create data URI from a file.
 }
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function la() # List all files, long format, colorized, permissions in octal
 {
@@ -48,14 +52,14 @@ function la() # List all files, long format, colorized, permissions in octal
     }'
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function f() # Find shorthand
 {
   find . -name "$1" 2>&1 | grep -v 'Permission denied'
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function qfind() # Quickly find files that contain a string in a directory
 {
@@ -63,7 +67,7 @@ function qfind() # Quickly find files that contain a string in a directory
   return 0
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function delete-files() # Delete files that match a certain pattern from the current directory.
 {
@@ -71,21 +75,21 @@ function delete-files() # Delete files that match a certain pattern from the cur
     find . -type f -name "$q" -ls -delete
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function cdf() # cd into whatever is the forefront Finder window.
 {  # short for cdfinder
   cd "`osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)'`"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function cp_p()  # Copy w/ progress
 {
   rsync -WavP --human-readable --progress $1 $2
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function gzinfo() # Get gzip information (gzipped file size + reduction size).
 {
@@ -119,18 +123,22 @@ function gzinfo() # Get gzip information (gzipped file size + reduction size).
 
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function targz() # Create .tar.gz
 {
   tar -zcvf $1.tar.gz $1; rm -r $1;
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 # extra .tar.gz
 function untargz()
 {
   tar -zxvf $1; rm -r $1;
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function numfiles() # Count number of files in a directory
 {
@@ -138,7 +146,7 @@ function numfiles() # Count number of files in a directory
     echo "$N files in $1";
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # (because `du -h` doesn't cut it for me).
 function hrfs() # Human readable file size
@@ -172,15 +180,14 @@ function hrfs() # Human readable file size
     #       (changes "1023.2 KB" to "1,023.2 KB")
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function md() # Create a new directory and enter it
 {
   mkdir -p "$@" && cd "$@"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function mkd() # Create new directories and enter the first one.
 {
@@ -195,7 +202,7 @@ function mkd() # Create new directories and enter the first one.
     fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function qh() # Search history.
 {
@@ -207,7 +214,7 @@ function qh() # Search history.
     #       don't clear the screen after quitting less ─┘
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function qt() # Search for text within the current directory.
 {
@@ -216,15 +223,14 @@ function qt() # Search for text within the current directory.
     #     └─ ignore case
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function gitnr() # Create a new git repo with one README commit and CD into it
 {
   mkdir $1; cd $1; git init; touch README; git add README; git commit -mFirst-commit;
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # ex.: manp vim
 function manp() # Use Mac OS Preview to open a man page in a more handsome format
@@ -232,21 +238,21 @@ function manp() # Use Mac OS Preview to open a man page in a more handsome forma
   man -t $1 | open -f -a /Applications/Preview.app
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function fixperms() # Fix permissions for .sh files
 {
     find . \( -name "*.sh" -or -type d \) -exec chmod 755 {} \; && find . -type f ! -name "*.sh" -exec chmod 644 {} \;
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function mkd() # Create a new directory and enter it
 {
   mkdir -p "$@" && cd "$_";
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function macvendorlookup () # Lookup MAC vendor
 {
@@ -254,7 +260,7 @@ function macvendorlookup () # Lookup MAC vendor
     # curl -s "http://api.macvendors.com/$*"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function weather() # Weather seattle
 {
@@ -278,7 +284,7 @@ function weather() # Weather seattle
   return 0
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function camerausedby() # Who is using the laptop's iSight camera?
 {
@@ -287,8 +293,7 @@ function camerausedby() # Who is using the laptop's iSight camera?
   echo -e "Recent camera uses:\n$usedby"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # from alex sexton   gist.github.com/SlexAxton/4989674
 function gifify() # Animated gifs from any video
@@ -306,7 +311,7 @@ function gifify() # Animated gifs from any video
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # brew reinstall ffmpeg --with-libvpx
 function webmify() # Turn that video into webm.
@@ -314,14 +319,14 @@ function webmify() # Turn that video into webm.
 	ffmpeg -i "$1" -vcodec libvpx -acodec libvorbis -isync -copyts -aq 80 -threads 3 -qmax 30 -y "$2" "$1.webm"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function nullify() # Direct it all to /dev/null
 {
   "$@" >/dev/null 2>&1
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Execute commands for each file in current directory.
 function each() {
@@ -333,8 +338,7 @@ function each() {
   done
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # $ ram safari
 # # => safari uses 154.69 MBs of RAM.
@@ -359,8 +363,7 @@ function ram() # Show how much RAM application uses.
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # hist git
 function hist() # Shortcut for searching commands history.
@@ -368,7 +371,7 @@ function hist() # Shortcut for searching commands history.
   history | grep $@
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ##### Just For Fun ####################################################
 
@@ -379,44 +382,28 @@ function compute()
     | hexdump -C | grep "ca fe"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# print available colors and their numbers
-colours()
-{
-  for i in {0..255}; do
-      printf "\x1b[38;5;${i}mcolour%-5i\x1b[0m" $i
-      if ! (( ($i + 1 ) % 8 )); then echo ; fi ;
-  done
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function matrix1()
 {
-
   echo -e "\e[1;40m" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|gawk '{ letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
-
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function matrix2()
 {
-
   echo -e "\e[1;40m" ; clear ; characters=$( jot -c 94 33 | tr -d '\n' ) ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) $characters ;sleep 0.05; done|gawk '{ letters=$5; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
-
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 commandExists()
 {
     type "$1" &> /dev/null ;
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function mach() # Displays the basic information about the system
 {
@@ -427,6 +414,8 @@ function mach() # Displays the basic information about the system
     echo -e "\nMemory status :" ; free
     echo -e "\nFilesystem status :"; df -h
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function fk() # Build menu to kill process
 {
@@ -441,9 +430,138 @@ function fk() # Build menu to kill process
     unset IFS
 }
 
-##### MAC ONLY #####################################################
-if [ `uname` == "Darwin" ]; then
+# ------------------------------------------------------------------------------
+# PATH
+# ------------------------------------------------------------------------------
+pathadd() {
+    if [ -d "$1" ] && ! echo $PATH | grep -E -q "(^|:)$1($|:)" ; then
+        [ "$2" = "after" ] && PATH="$PATH:${1%/}" || PATH="${1%/}:$PATH"
+    fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+pathrm() {
+    PATH="$(echo $PATH | sed -e "s;\(^\|:\)${1%/}\(:\|\$\);\1\2;g" -e 's;^:\|:$;;g' -e 's;::;:;g')"
+}
+
+# Complete default PATH eventually
+for bindir in /usr/local/bin $HOME/bin; do
+    pathadd ${bindir}
+done
+pathadd $HOME/.rvm/bin after
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+manpathadd() {
+    if [ -d "$1" ] && ! echo $MANPATH | grep -E -q "(^|:)$1($|:)" ; then
+        [ "$2" = "after" ] && MANPATH="$MANPATH:${1%/}" || MANPATH="${1%/}:$MANPATH"
+    fi
+}
+
+# Complete default MANPATH eventually
+# for mandir in /usr/local/share/man $HOME/share/man; do
+#     manpathadd ${mandir}
+# done
+
+
+# Remove duplicate entries from a PATH style value while retaining
+# the original order. Use PATH if no <path> is given.
+# Usage: puniq [<path>]
+#
+# Example:
+#   $ puniq /usr/bin:/usr/local/bin:/usr/bin
+#   /usr/bin:/usr/local/bin
+###
+puniq () {
+    echo "$1" |tr : '\n' |nl |sort -u -k 2,2 |sort -n |
+        cut -f 2- |tr '\n' : |sed -e 's/:$//' -e 's/^://'
+}
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Whiteboard Picture Cleaner - Shell one-liner/script to clean up and beautify photos of whiteboards!
+# https://gist.github.com/lelandbatey/8677901
+# whiteboardCleaner example.jpg output.png
+function whiteboardCleaner() # Script to clean up and beautify photos of whiteboards! V1
+{
+  convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "$2"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function whiteboardCleaner2() # Script to clean up and beautify photos of whiteboards! V2
+{
+  convert "$1" \( +clone -blur 0x20 \) -compose Divide_Src -composite -normalize -level 10%,90% -deskew 40% -unsharp 0x5+2+0 "$2"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function whiteboardCleaner3() # Script to clean up and beautify photos of whiteboards! V3
+{
+  convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "cleaned_$1"
+  convert "cleaned_$1" -fuzz 80% -trim +repage "trimmed_$1"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function typing-echo () # echo "You can simulate on-screen typing just like in the movies" | pv -qL 10
+{
+    echo "$@" | pv -qL 10
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function forgethost () # Clear known_hosts
+{ sed -i "${1}d" "$HOME/.ssh/known_hosts"; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# convert binaries
+# copyright 2007 - 2010 Christopher Bratusek
+function bin2all() {
+	if [[ $1 ]]; then
+		echo "binary $1 = octal $(bin2oct $1)"
+		echo "binary $1 = decimal $(bin2dec $1)"
+		echo "binary $1 = hexadecimal $(bin2hex $1)"
+		echo "binary $1 = base32 $(bin2b32 $1)"
+		echo "binary $1 = base64 $(bin2b64 $1)"
+		echo "binary $1 = ascii $(bin2asc $1)"
+	fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Readablity CLI
+# Removes junk from websites and just give you the body of the post
+# requires python2-2.7 & python2-chardet
+# https://github.com/buriy/python-readability
+# ebook-convert from http://manual.calibre-ebook.com/cli/ebook-convert.html
+function readability2epub()
+{
+	python2.7 -m readability.readability -u "$1" > /tmp/"$2".html
+	ebook-convert /tmp/"$2".html ~/Downloads/"$2".epub
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function eval_dircolors {
+  dircolors=~/.dircolors
+  if [ -f "$dircolors" ]; then
+    eval "$("gdircolors" "-b" "$dircolors")"
+  fi
+  unset "dircolors"
+}
+
+
+# ------------------------------------------------------------------------------
+# MACOS X / DARWIN SPECIFIC
+# ------------------------------------------------------------------------------
+
+if [ `uname` == "Darwin" ]; then
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function finder1() # Show current Finder directory.
 {
@@ -454,7 +572,7 @@ function finder1() # Show current Finder directory.
 EOF
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 # $ get-pass github
@@ -465,7 +583,7 @@ function get-pass() # Gets password from macOS Keychain.
     awk -F\" '/password:/ {print $2}';
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function wav-pcm8000() # Convert all wav audio files to 8bit PCM 8000Hz Wave for Asterisk IVR menu
 {
@@ -478,7 +596,7 @@ function wav-pcm8000() # Convert all wav audio files to 8bit PCM 8000Hz Wave for
 
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function pingsay() # Using the Say Command in Terminal
 {
@@ -486,6 +604,9 @@ function pingsay() # Using the Say Command in Terminal
   { while true; do ping "$1" -c 1 > /dev/null 2>&1 && echo "ping" && sleep 0.7; done } | { while read line; do say $line & done }
 
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 function notify()
 {
   if [ $# -eq 1  ]; then
@@ -499,6 +620,8 @@ function notify()
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 function play()
 {
   for i in "$@"; do
@@ -507,10 +630,14 @@ function play()
   done
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 function play_random()
 {
   find . -iname "*.mp3" | sort -R | while read a; do echo "$a"; afplay "$a"; done
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # https://apple.stackexchange.com/questions/107297/how-can-i-play-a-midi-file-from-terminal
 function playmidi
@@ -538,72 +665,116 @@ function playmidi
 }
 
 fi
-##### END MAC ONLY #####################################################
+
+# ------------------------------------------------------------------------------
+# MACOS X / DARWIN SPECIFIC
+# ------------------------------------------------------------------------------
+
+if [ `uname` == "Darwin" ]; then
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function finder1() # Show current Finder directory.
+{
+  osascript 2>/dev/null <<EOF
+    tell application "Finder"
+      return POSIX path of (target of window 1 as alias)
+    end tell
+EOF
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+# $ get-pass github
+function get-pass() # Gets password from macOS Keychain.
+{
+  keychain="$HOME/Library/Keychains/login.keychain"
+  security -q find-generic-password -g -l $@ $keychain 2>&1 |\
+    awk -F\" '/password:/ {print $2}';
+}
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Whiteboard Picture Cleaner - Shell one-liner/script to clean up and beautify photos of whiteboards!
-# https://gist.github.com/lelandbatey/8677901
-# whiteboardCleaner example.jpg output.png
-function whiteboardCleaner() # Script to clean up and beautify photos of whiteboards! V1
+function wav-pcm8000() # Convert all wav audio files to 8bit PCM 8000Hz Wave for Asterisk IVR menu
 {
 
-  convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "$2"
+  for file in $(ls *wav)
+  do
+    name=${file%%.wav}
+    afconvert -d "LEI16@8000" -f "WAVE" $name.wav $name.C.wav
+  done
 
 }
 
-function whiteboardCleaner2() # Script to clean up and beautify photos of whiteboards! V2
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function pingsay() # Using the Say Command in Terminal
 {
 
-  convert "$1" \( +clone -blur 0x20 \) -compose Divide_Src -composite -normalize -level 10%,90% -deskew 40% -unsharp 0x5+2+0 "$2"
+  { while true; do ping "$1" -c 1 > /dev/null 2>&1 && echo "ping" && sleep 0.7; done } | { while read line; do say $line & done }
 
 }
 
-function whiteboardCleaner3() # Script to clean up and beautify photos of whiteboards! V3
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function notify()
+{
+  if [ $# -eq 1  ]; then
+    osascript -e "display notification \"$1\" with title \"Notification\""
+  elif [ $# -eq 2  ]; then
+    osascript -e "display notification \"$2\" with title \"$1\""
+  elif [ $# -eq 3  ]; then
+    osascript -e "display notification \"$3\" with title \"$1\"  subtitle \"$2\""
+  else
+    echo "Can only be run with 1/2/3 arguments"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function play()
+{
+  for i in "$@"; do
+    echo "Playing: $i"
+    afplay "$i"
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function play_random()
+{
+  find . -iname "*.mp3" | sort -R | while read a; do echo "$a"; afplay "$a"; done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# https://apple.stackexchange.com/questions/107297/how-can-i-play-a-midi-file-from-terminal
+function playmidi
 {
 
-  convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "cleaned_$1"
+    SOUNDFONT="$HOME/Projects/dotfiles/src/lib/MIDI/GeneralUser GS 1.471/GeneralUser GS v1.471.sf2"
 
-  convert "cleaned_$1" -fuzz 80% -trim +repage "trimmed_$1"
+    if [ -e "$SOUNDFONT" ]
+    then
+
+        for i in "$@"
+        do
+            if [ -e "$i" ]
+            then
+                (fluidsynth -i "$SOUNDFONT" "$i"  2>&1) >/dev/null
+            else
+                echo "[playmidi]: cannot find file at $i"
+                return 1
+            fi
+        done
+    else
+            echo "[playmidi]: SOUNDFONT file not found at $SOUNDFONT"
+            return 1
+    fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-function typing-echo () # echo "You can simulate on-screen typing just like in the movies" | pv -qL 10
-{
-    echo "$@" | pv -qL 10
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function forgethost () # Clear known_hosts
-{ sed -i "${1}d" "$HOME/.ssh/known_hosts"; }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# convert binaries
-# copyright 2007 - 2010 Christopher Bratusek
-function bin2all() {
-	if [[ $1 ]]; then
-		echo "binary $1 = octal $(bin2oct $1)"
-		echo "binary $1 = decimal $(bin2dec $1)"
-		echo "binary $1 = hexadecimal $(bin2hex $1)"
-		echo "binary $1 = base32 $(bin2b32 $1)"
-		echo "binary $1 = base64 $(bin2b64 $1)"
-		echo "binary $1 = ascii $(bin2asc $1)"
-	fi
-}
-
-# Readablity CLI
-# Removes junk from websites and just give you the body of the post
-# requires python2-2.7 & python2-chardet
-# https://github.com/buriy/python-readability
-# ebook-convert from http://manual.calibre-ebook.com/cli/ebook-convert.html
-function readability2epub()
-{
-	python2.7 -m readability.readability -u "$1" > /tmp/"$2".html
-	ebook-convert /tmp/"$2".html ~/Downloads/"$2".epub
-}
+fi
+# ------------------------------------------------------------------------------
+# END MACOS X / DARWIN SPECIFIC
+# ------------------------------------------------------------------------------
