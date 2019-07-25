@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# pgrep -l Adobe
+#pkill Adobe
+#launchctl stop com.adobe.*
+
+PROCESSES=( "Adguard" \
+            "Adobe CEF Helper" \
+            "AdobeIPCBroker" \
+            "Adobe Desktop Service" \
+            "AdobeCRDaemon" \
+            "Adobe Installer" \
+            "com.adobe.acc.installer.v2" \
+            "Android File Transfer Agent" \
+            "clamd" \
+            "CleanMyMac" \
+            "CleanMyMac X Menu" \
+            "CleanMyMac X HealthMonitor" \
+            "Creative Cloud" \
+            "DAEMONToolsAgent" \
+            "Dreamweaver" \
+            "Dropbox" \
+            "Dropbox Web Helper" \
+            "DropboxFolderTagger" \
+            "keybase" \
+            "Keybase" \
+            "Keybase Helper" \
+            "Little Snitch Agent" \
+            "Logitech Presentation" \
+            "Micro Snitch" \
+            "Microsoft" \
+            "Noti" \
+            "Now" \
+            "Now Helper" \
+            "Übersicht" \
+            )
+
+for PROC in "${PROCESSES[@]}"; do
+    RUNNING_PROCESSES=$(ps axc | grep -i "$PROC" | awk '{print $1}')
+    if [[ $RUNNING_PROCESSES ]]; then
+        echo "Found running process $PROC with PID: ${RUNNING_PROCESSES}. Killing it..."
+        kill $RUNNING_PROCESSES
+    else
+        echo "$PROC not found running..."
+    fi
+done

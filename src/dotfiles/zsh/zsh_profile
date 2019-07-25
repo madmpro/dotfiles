@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+
+source_zsh_files() {
+
+    declare -r CURRENT_DIRECTORY="$(pwd)"
+
+    declare -r -a FILES_TO_SOURCE=(
+#        "zsh_aliases"
+        "zsh_exports"
+#        "zsh_includes"
+        "zsh_functions"
+        # Clear console on exit to increase privacy
+#        "bash_logout"
+#        "zsh.local"  # For local settings that should not be under version control.
+
+    )
+
+    local file=""
+    local i=""
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    for i in ${FILES_TO_SOURCE}; do
+
+        file="$HOME/.zsh/$i"
+
+        [ -r "$file" ] && source "$file"
+
+    done
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    cd "$CURRENT_DIRECTORY"
+
+}
+
+
+# ------------------------------------------------------------------------------
+# Main
+# ------------------------------------------------------------------------------
+
+source_zsh_files
+
+# Remove Unused Function Alias. Important after renaming or removing a function in your .zshrc file.
+# unset -f my_function
+unset -f source_zsh_files

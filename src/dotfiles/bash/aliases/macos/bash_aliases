@@ -181,8 +181,9 @@ if [ `uname` == "Darwin" ]; then
   # Delete old MacOS backups
   alias deloldbkp="sudo tmutil delete $(tmutil machinedirectory)/$1"
 
-
-  [[ -f "$HOME/.atom/package.list" ]] && alias atompackagesinstall="apm install --packages-file $HOME/.atom/package.list"
+  [[ -f "$HOME/.atom/init/package.list" ]] && alias atompackagesinstall="apm install --packages-file $HOME/.atom/init/package.list"
+  [[ -f "$HOME/bin/gamadv-x" ]] && alias gam="$HOME/bin/gamadv-x/gam"
+  [[ -f "$HOME/bin/gyb" ]] && alias gyb="$HOME/bin/gyb/gyb"
 
 fi
 ##### MAC ONLY #####################################################

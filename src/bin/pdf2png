@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# pdf2png as a simple command, using ghostscript and imagemagick
+# https://gist.github.com/gautiermichelin/15d47b1fc688c045aaa1413caf837233
+
+PDF=$1
+PNG=$2
+convert -density 300x300 -units pixelsperinch $PDF -background white -alpha background -alpha off $PNG

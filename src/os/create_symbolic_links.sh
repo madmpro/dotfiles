@@ -42,7 +42,6 @@ create_symlinks() {
         "dotfiles/wgetrc"
         "dotfiles/zsh"
         "dotfiles/zsh/zshrc"
-        "dotfiles/zsh/zsh_history"
     )
 
     local i=""

@@ -6,7 +6,7 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 alias g="git"
-alias gam='git commit -am'
+alias gcam='git commit -am'
 alias gap='git add -p' # step through each change, or hunk
 alias gb='git branch'
 alias gbt=git_list_branches

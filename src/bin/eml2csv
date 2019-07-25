@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Eml2csv : shell script to extract To/From/Subject/Date from eml files inside a folder
+#https://gist.github.com/gautiermichelin/358a819557cb3b88dac6
+
+FILES=*.eml
+TARGET=./emails.csv
+
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+echo "To\tFrom\tSubj\tDate" >> $TARGET
+for f in $FILES
+do
+  echo "Processing $f file..."
+  # take action on each file. $f store current file name
+  EMLTO=$(grep "^To" < $f | sed -e "s/To://g")
+  EMLFROM=$(grep "^From" < $f | sed -e "s/From://g")
+  EMLSUBJ=$(grep "^Subject" < $f | sed -e "s/Subject://g")
+  EMLDATE=$(grep "^Date" < $f | sed -e "s/Date://g")
+  echo -e "${EMLTO//[$'\t\r\n']}\t${EMLFROM//[$'\t\r\n']}\t${EMLSUBJ//[$'\t\r\n']}\t${EMLDATE//[$'\t\r\n']}" >> $TARGET
+done
+IFS=$SAVEIFS

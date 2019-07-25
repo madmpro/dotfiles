@@ -110,6 +110,13 @@ export MC_SKIN=$HOME/.config/mc/skins/solarized.ini
 #[[ -d "/usr/local/bin" ]] &&  PATH="/usr/local/bin:$PATH"
 
 # ------------------------------------------------------------------------------
+# Google
+# ------------------------------------------------------------------------------
+
+[[ -d "$HOME/bin/gamadv-x" ]] && PATH="$HOME/bin/gamadv-x:$PATH"
+[[ -d "$HOME/bin/gyb" ]] && PATH="$HOME/bin/gyb:$PATH"
+
+# ------------------------------------------------------------------------------
 # MACOS X / DARWIN SPECIFIC
 # ------------------------------------------------------------------------------
 if [ `uname` == "Darwin" ]; then
@@ -119,7 +126,7 @@ if [ `uname` == "Darwin" ]; then
 
   # Brewed Ruby path
   [[ -d "/usr/local/opt/ruby/bin" ]] &&  PATH="/usr/local/opt/ruby/bin:$PATH"
-  [[ -d "/usr/local/opt/python@2/bin" ]] && PATH="/usr/local/opt/python@2/bin:$PATH"  
+  [[ -d "/usr/local/opt/python@2/bin" ]] && PATH="/usr/local/opt/python@2/bin:$PATH"
   [[ -d "$HOME/Library/Python/2.7/bin" ]] && PATH="$HOME/Library/Python/2.7/bin:$PATH"
 
   [[ -d "/usr/local/opt/sqlite/bin" ]] && PATH="/usr/local/opt/sqlite/bin:$PATH"
@@ -138,13 +145,13 @@ if [ `uname` == "Darwin" ]; then
   #because macOS already provides this software and installing another version in
   #parallel can cause all kinds of trouble.
 
-  [[ -d "/usr/local/opt/llvm/bin" ]] &&export PATH="/usr/local/opt/llvm/bin:$PATH"
+  [[ -d "/usr/local/opt/llvm/bin" ]] && export PATH="/usr/local/opt/llvm/bin:$PATH"
 
   #For compilers to find this software you may need to set:
   #    LDFLAGS:  -L/usr/local/opt/llvm/lib
   #    CPPFLAGS: -I/usr/local/opt/llvm/include
 
   # go
-  [[ -d "/usr/local/opt/go/libexec/bin" ]] &&export PATH="$PATH:/usr/local/opt/go/libexec/bin"
+  [[ -d "/usr/local/opt/go/libexec/bin" ]] && export PATH="$PATH:/usr/local/opt/go/libexec/bin"
 
 fi

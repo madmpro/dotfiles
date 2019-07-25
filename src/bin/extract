@@ -53,6 +53,8 @@ function extract {
                       unace x       "$fullpath" ;;
           *.ipa)      unzip         "$fullpath" ;;
           *.pax)      pax -r <      "$fullpath" ;;
+          # unpack Cisco .bin files to GNS3 .image
+          *.bin)      unzip -p      "$fullpath" > "$(pwd)/$foldername/${filename%.*}.image";;
 
           *)
                       echo "extract: '$n' - unknown archive method"
