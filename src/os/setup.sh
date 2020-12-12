@@ -195,8 +195,8 @@ verify_os() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    else
-        printf "Sorry, this script is intended only for macOS and Ubuntu!"
+    #else
+    #    printf "Sorry, this script is intended only for macOS and Ubuntu!"
     fi
 
     return 1
